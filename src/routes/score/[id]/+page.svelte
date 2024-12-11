@@ -1,8 +1,10 @@
 <script lang="ts">
-  let { data } = $props();
+  import type { PageData } from "./$types";
+
+  let { data }: { data: PageData } = $props();
 </script>
 
-<pre>{JSON.stringify(data, null, 4)}</pre>
 <form method="POST">
+  <pre>{JSON.stringify(data.score, null, 4)}</pre>
   <button type="submit">Purchase!</button>
 </form>

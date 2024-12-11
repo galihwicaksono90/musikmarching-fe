@@ -22,7 +22,7 @@
 			<p>{score.pdf_url}</p>
 			<p>{score.music_url}</p>
 			<p>{score.is_verified}</p>
-			<a href={`/score/{score.id}`}>View</a>
+			<a href={`/score/${score.id}`}>View</a>
 		</div>
 	</div>
 {/each}
