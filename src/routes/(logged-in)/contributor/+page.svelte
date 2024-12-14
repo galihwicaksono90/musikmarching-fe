@@ -2,20 +2,12 @@
 	import type { PageData } from "./$types";
 
 	let { data }: { data: PageData } = $props();
-
-	const { scores, user } = data;
 </script>
 
-<a href="http://localhost:8080/oauth2/google">Login</a>
-<a href="http://localhost:8080/oauth2/logout/google">Logout</a>
-
-<!-- <pre>{JSON.stringify(data, null, 4)}</pre> -->
-{#if user?.email}
-	<h1>{user.email}</h1>
-{/if}
+<h1>Contributor Page</h1>
 <div class="flex gap-8">
-	{#each scores as score}
-		<a href={`/score/${score.id}`}>
+	{#each data.scores as score}
+		<a href={`/contributor/score/${score.id}`}>
 			<div class="w-32 flex gap-8 w-full border-2 rounded-xl shadow-md p-8">
 				<div class="flex flex-col">
 					<p>{score.title}</p>
