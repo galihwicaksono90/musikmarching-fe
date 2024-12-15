@@ -1,40 +1,43 @@
-import type { PageServerLoad } from './$types'
-import { z } from 'zod'
-import { superForm } from 'sveltekit-superforms'
-import { zod } from 'sveltekit-superforms/adapters'
-
-// const SIZE_LIMIT = 1000000;
-
-// const pdfFileSchema = typeof window === 'undefined' ? z.any() : z.instanceof(File, { message: 'Please select an image.' })
-//   .nullish()
-//   .refine((file) => {
-//     return file?.size ? file?.size <= SIZE_LIMIT : true;
-//   }, 'Upload document smaller than 1MB')
-//   .refine((file) => {
-//     return file?.type ? file.type === "application/pdf" : true;
-//   }, 'File must be an PDF file (.pdf)');
-
-// const musicFileSchema = typeof window === 'undefined' ? z.any() : z.instanceof(File, { message: 'Please select an image.' })
-//   .nullish()
-//   .refine((file) => {
-//     return file?.size ? file?.size <= SIZE_LIMIT : true;
-//   }, 'Upload music file smaller than 1MB')
-//   .refine((file) => {
-//     return file?.type ? file.type === "audio/mpeg" : true;
-//   }, 'File must be an mp3 file (.mp3)');
-
-const createScoreFormSchema = z.object({
-  title: z.string(),
-  price: z.number(),
-  // pdf_file: pdfFileSchema,
-  // music_file: musicFileSchema,
-})
-
+import type { PageServerLoad, Actions } from "./$types.js";
+import { superValidate, withFiles } from "sveltekit-superforms";
+import { formSchema } from "./schema";
+import { zod } from "sveltekit-superforms/adapters";
+import { fail, redirect } from "@sveltejs/kit";
 
 export const load: PageServerLoad = async () => {
-  const form = superForm(zod(createScoreFormSchema))
-
   return {
-    form,
+    form: await superValidate(zod(formSchema)),
   };
+};
+
+export const actions: Actions = {
+  createScore: async (event) => {
+    const form = await superValidate(event, zod(formSchema));
+    if (!form.valid) {
+      return fail(400, withFiles({
+        form,
+      }));
+    }
+
+    const formData = new FormData();
+
+    formData.append("title", form.data.title);
+    formData.append("price", form.data.price.toString());
+    formData.append("pdf_file", form.data.pdfFile);
+
+    console.log({ formData })
+
+    const result = await event.fetch("http://localhost:8080/api/v1/contributor/score", {
+      method: "POST",
+      body: formData,
+    }).then((res) => res.json());
+
+    if (result?.meta?.code === 201){
+      redirect(303, `/contributor/score/${result.data}`);
+    }
+
+    return withFiles({
+      form,
+    });
+  },
 };
