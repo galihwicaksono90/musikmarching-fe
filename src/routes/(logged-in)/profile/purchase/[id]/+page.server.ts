@@ -1,3 +1,4 @@
+import { purchaseSchema } from "$lib/model"
 import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
@@ -10,7 +11,13 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
     throw error(404, 'Thing not found');
   }
 
+  const parsedPurchase = purchaseSchema.safeParse(purchase.data);
+  console.log(JSON.stringify( parsedPurchase.error, null, 4 ))
+  if (!parsedPurchase.success) {
+    throw error(404, 'Thing not found');
+  }
+
   return {
-    purchase: purchase.data,
+    purchase: parsedPurchase.data,
   };
 };

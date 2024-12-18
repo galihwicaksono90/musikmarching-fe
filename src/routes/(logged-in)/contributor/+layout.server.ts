@@ -1,10 +1,10 @@
 import type { LayoutServerLoad } from './$types';
 import { redirect } from '@sveltejs/kit';
 
-export const load: LayoutServerLoad = async ({  parent }) => {
+export const load: LayoutServerLoad = async ({ parent }) => {
   const { user } = await parent()
 
-  if (!user || user.role_name !== 'contributor') {
+  if (!user || user.role_name !== "contributor") {
     console.log('unauthorized')
     throw redirect(303, '/');
   }

@@ -11,16 +11,6 @@ import Button from "./form-button.svelte";
 const Control = FormPrimitive.Control;
 
 export {
-	Field,
-	Control,
-	Label,
-	Button,
-	FieldErrors,
-	Description,
-	Fieldset,
-	Legend,
-	ElementField,
-	//
 	Field as FormField,
 	Control as FormControl,
 	Description as FormDescription,

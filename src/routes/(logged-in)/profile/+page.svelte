@@ -15,7 +15,7 @@
       {#if purchase.is_verified}
         <p>Verified</p>
       {/if}
-      <a href={`/purchase/${purchase.id}`}> View </a>
+      <a href={`/profile/purchase/${purchase.id}`}> View </a>
     </div>
   {/each}
 </div>

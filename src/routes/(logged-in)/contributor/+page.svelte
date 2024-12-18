@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { PageData } from "./$types";
+	import { Button } from "$lib/components/ui";
 
 	let { data }: { data: PageData } = $props();
 </script>
@@ -19,3 +20,6 @@
 		</a>
 	{/each}
 </div>
+<a href="/contributor/score/create">
+	<Button>Create Score</Button>
+</a>

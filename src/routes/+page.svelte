@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { PageData } from "./$types";
+	import { Button } from "$lib/components/ui";
 
 	let { data }: { data: PageData } = $props();
 
@@ -26,4 +27,7 @@
 			</div>
 		</a>
 	{/each}
+	<a href="/contributor">
+		<Button>Contributor page</Button>
+	</a>
 </div>

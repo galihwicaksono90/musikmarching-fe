@@ -7,3 +7,4 @@
 </script>
 
 <pre>{JSON.stringify(purchase, null, 4)}</pre>
+<pre>{purchase.created_at}</pre>
