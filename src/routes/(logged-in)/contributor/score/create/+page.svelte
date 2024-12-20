@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { PageData } from "./$types.js";
+  import type { PageData } from "./$types";
   import { ContributorScoreForm } from "$lib/components/form";
   let { data }: { data: PageData } = $props();
 </script>

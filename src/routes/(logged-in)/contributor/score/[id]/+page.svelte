@@ -4,10 +4,9 @@
   import { ContributorScoreForm } from "$lib/components/form";
 
   let { data }: { data: PageData } = $props();
-  const { form, score } = data;
 </script>
 
 <h1>Contributor Score Page</h1>
 
-<ContributorScoreForm data={form} isEditing />
-<ScoreCard {score} />
+<ContributorScoreForm data={data.form} isEditing />
+<ScoreCard score={data.score} />

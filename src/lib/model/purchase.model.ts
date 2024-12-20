@@ -2,6 +2,7 @@ import { z } from 'zod';
 import {timeSchema} from './time.model'
 
 export const purchaseSchema = z.object({
+  id: z.string().uuid(),
   invoice_serial: z.number(),
   account_id: z.string().uuid(),
   score_id: z.string().uuid(),

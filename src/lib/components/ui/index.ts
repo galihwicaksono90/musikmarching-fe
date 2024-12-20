@@ -3,3 +3,4 @@ export * from "./form/index";
 export * from "./input/index";
 export * from "./label/index";
 export * from "./sonner/index";
+export * from "./avatar/index";

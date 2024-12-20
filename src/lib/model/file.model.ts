@@ -6,4 +6,4 @@ export const pdfFileSchema = z
   .instanceof(File, { message: 'Please upload a file....' })
   .refine((f) => f.size < SIZE_LIMIT, 'Max 1 MB upload size.')
 
-export const musicFileSchema = pdfFileSchema;
+export const audioFileSchema = pdfFileSchema;

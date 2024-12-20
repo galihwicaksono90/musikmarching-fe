@@ -11,7 +11,8 @@ export const load: PageServerLoad = async ({ fetch }) => {
     };
   }
 
+
   return {
-    scores: parsedScores.data
+    scores: parsedScores.data,
   };
 };

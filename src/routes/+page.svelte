@@ -3,19 +3,17 @@
 	import { Button } from "$lib/components/ui";
 
 	let { data }: { data: PageData } = $props();
-
-	const { scores, user } = data;
 </script>
 
 <a href="http://localhost:8080/oauth2/google">Login</a>
 <a href="http://localhost:8080/oauth2/logout/google">Logout</a>
 
 <!-- <pre>{JSON.stringify(data, null, 4)}</pre> -->
-{#if user?.email}
-	<h1>{user.email}</h1>
+{#if data.user?.email}
+	<h1>{data.user.email}</h1>
 {/if}
 <div class="flex gap-8">
-	{#each scores as score}
+	{#each data.scores as score}
 		<a href={`/score/${score.id}`}>
 			<div class="w-32 flex gap-8 w-full border-2 rounded-xl shadow-md p-8">
 				<div class="flex flex-col">
@@ -27,7 +25,9 @@
 			</div>
 		</a>
 	{/each}
-	<a href="/contributor">
-		<Button>Contributor page</Button>
-	</a>
 </div>
+{#if !!data.user}
+	<a href="/profile">
+		<Button>My Profile</Button>
+	</a>
+{/if}

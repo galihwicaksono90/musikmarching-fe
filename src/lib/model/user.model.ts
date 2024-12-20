@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { timeSchema } from './time.model';
 
 const roleNames = ['contributor', 'admin', 'user'] as const;
 export const roleNameSchema = z.enum(roleNames)
@@ -9,4 +10,6 @@ export const userSchema = z.object({
   email: z.string(),
   name: z.string(),
   role_name: roleNameSchema,
+  is_verified: z.boolean().optional(),
+  verified_at: timeSchema.optional(),
 })

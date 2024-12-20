@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { pdfFileSchema, musicFileSchema } from './file.model';
+import { pdfFileSchema, audioFileSchema } from './file.model';
 import { timeSchema } from './time.model';
 
 export const scoreSchema = z.object({
@@ -7,7 +7,8 @@ export const scoreSchema = z.object({
   title: z.string(),
   price: z.number(),
   pdf_url: z.string().nullable(),
-  music_url: z.string().nullable(),
+  pdf_image_urls: z.string().array(),
+  audio_url: z.string().nullable(),
   is_verified: z.boolean(),
   created_at: timeSchema,
   updated_at: timeSchema.nullish(),
@@ -21,8 +22,9 @@ export const contributorScoreSchema = scoreSchema.pick({
   title: true,
   is_verified: true,
   price: true,
-  music_url: true,
+  audio_url: true,
   pdf_url: true,
+  pdf_image_urls: true,
 }).extend({
   email: z.string(),
   name: z.string(),
@@ -34,7 +36,7 @@ export const createScoreFormSchema = z.object({
   title: z.string().min(5).max(50),
   price: z.number({ message: "Not a valid number" }).lte(100000000, { message: "Kemahalan. Ngga ada yang beli nanti" }),
   pdfFile: pdfFileSchema,
-  musicFile: musicFileSchema,
+  audioFile: audioFileSchema,
 });
 
 export const updateScoreFormSchema = createScoreFormSchema
@@ -44,7 +46,7 @@ export const updateScoreFormSchema = createScoreFormSchema
   })
   .extend({
     pdfFile: pdfFileSchema.optional(),
-    musicFile: musicFileSchema.optional(),
+    audioFile: audioFileSchema.optional(),
   })
 
 export type CreateScoreFormSchema = typeof createScoreFormSchema;

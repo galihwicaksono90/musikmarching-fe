@@ -24,7 +24,7 @@ export const actions: Actions = {
     formData.append("title", form.data.title);
     formData.append("price", form.data.price.toString());
     formData.append("pdf_file", form.data.pdfFile);
-    formData.append("music_file", form.data.musicFile);
+    formData.append("audio_file", form.data.audioFile);
 
     const result = await event.fetch("http://localhost:8080/api/v1/contributor/score", {
       method: "POST",

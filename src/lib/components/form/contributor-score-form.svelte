@@ -6,17 +6,18 @@
     FormFieldErrors,
     FormLabel,
     FormButton,
+    Input,
   } from "$lib/components/ui";
-  import { Input } from "$lib/components/ui/input/index.js";
   import { Control } from "formsnap";
   import { createScoreFormSchema, updateScoreFormSchema } from "$lib/model";
   import {
     type SuperValidated,
     type Infer,
     superForm,
-  } from "sveltekit-superforms";
+  } from "sveltekit-superforms/client";
   import { zodClient } from "sveltekit-superforms/adapters";
   import { toast } from "svelte-sonner";
+  import { invalidateAll } from "$app/navigation";
 
   let {
     data,
@@ -32,10 +33,14 @@
     validators: zodClient(
       isEditing ? updateScoreFormSchema : createScoreFormSchema,
     ),
-    resetForm: false,
+    onUpdated: () => {
+      if (isEditing) {
+        invalidateAll();
+      }
+    },
   });
 
-  const { form: formData, enhance, message, delayed , } = form;
+  const { form: formData, enhance, message, delayed } = form;
 
   $effect(() => {
     if ($message) {
@@ -58,7 +63,7 @@
       <FormField {form} name="title">
         <FormControl>
           {#snippet children({ props }: { props: Control })}
-            <FormLabel required={true}>Title</FormLabel>
+            <FormLabel required>Title</FormLabel>
             <Input
               {...props}
               bind:value={$formData.title}
@@ -104,21 +109,21 @@
         <FormFieldErrors />
       </FormField>
 
-      <FormField {form} name="musicFile">
+      <FormField {form} name="audioFile">
         <FormControl>
           {#snippet children({ props }: { props: Control })}
-            <FormLabel required={!isEditing}>Music File</FormLabel>
+            <FormLabel required={!isEditing}>Audio File</FormLabel>
             <Input
               {...props}
               on:input={(e) =>
-                ($formData.musicFile = e.currentTarget.files?.item(0) as File)}
-              name="musicFile"
+                ($formData.audioFile = e.currentTarget.files?.item(0) as File)}
+              name="audioFile"
               type="file"
               accept="audio/mpeg"
             />
           {/snippet}
         </FormControl>
-        <FormDescription>Upload your music MP3 file</FormDescription>
+        <FormDescription>Upload your audio MP3 file</FormDescription>
         <FormFieldErrors />
       </FormField>
       <FormButton loading={$delayed}>Submit</FormButton>

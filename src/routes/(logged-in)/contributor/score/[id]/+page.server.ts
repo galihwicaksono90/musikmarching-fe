@@ -16,14 +16,14 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
   }
 
   const data = {
-    price: score.data.price,
-    title: score.data.title
+    price: score.data?.price,
+    title: score.data?.title
   }
 
   const form = await superValidate(data, zod(updateScoreFormSchema))
 
   return {
-    score: score.data,
+    score: res.data,
     form,
   }
 }
@@ -44,27 +44,17 @@ export const actions: Actions = {
     if (form.data.pdfFile) {
       formData.append("pdf_file", form.data.pdfFile)
     }
-    if (form.data.musicFile) {
-      formData.append("music_file", form.data.musicFile)
+    if (form.data.audioFile) {
+      formData.append("audio_file", form.data.audioFile)
     }
-
-    //delay for 2 seconds
-    await new Promise((resolve) => setTimeout(resolve, 5000));
 
     const res = await event
       .fetch(`http://localhost:8080/api/v1/contributor/score/${event.params.id}`, {
         method: 'PUT',
         body: formData,
-      })
-      .then((r) => r.json())
-      .catch(() => {
-        return message(form, "Something went wrong!")
-      });
-
+      }).then((r) => r.json())
     if (res?.meta?.code !== 200) {
-      return withFiles({
-        form
-      })
+      return message(form, "Something went wrong!")
     }
 
     return message(form, "Score updated successfully!")
