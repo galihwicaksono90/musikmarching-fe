@@ -1,13 +1,8 @@
 <script lang="ts">
   import {
-    FormField,
-    FormControl,
-    FormDescription,
-    FormFieldErrors,
-    FormLabel,
-    FormButton,
     Input,
   } from "$lib/components/ui";
+  import * as Form from "$lib/components/ui/form";
   import { Control } from "formsnap";
   import { createScoreFormSchema, updateScoreFormSchema } from "$lib/model";
   import {
@@ -60,10 +55,10 @@
       enctype="multipart/form-data"
       action={isEditing ? "?/updateScore" : "?/createScore"}
     >
-      <FormField {form} name="title">
-        <FormControl>
+      <Form.Field {form} name="title">
+        <Form.Control>
           {#snippet children({ props }: { props: Control })}
-            <FormLabel required>Title</FormLabel>
+            <Form.Label required>Title</Form.Label>
             <Input
               {...props}
               bind:value={$formData.title}
@@ -71,14 +66,14 @@
               type="text"
             />
           {/snippet}
-        </FormControl>
-        <FormDescription>This is thet</FormDescription>
-        <FormFieldErrors />
-      </FormField>
-      <FormField {form} name="price">
-        <FormControl>
+        </Form.Control>
+        <Form.Description>This is thet</Form.Description>
+        <Form.FieldErrors />
+      </Form.Field>
+      <Form.Field {form} name="price">
+        <Form.Control>
           {#snippet children({ props }: { props: Control })}
-            <FormLabel required>Price</FormLabel>
+            <Form.Label required>Price</Form.Label>
             <Input
               {...props}
               bind:value={$formData.price}
@@ -86,15 +81,15 @@
               type="number"
             />
           {/snippet}
-        </FormControl>
-        <FormDescription>Enter the price of your score</FormDescription>
-        <FormFieldErrors />
-      </FormField>
+        </Form.Control>
+        <Form.Description>Enter the price of your score</Form.Description>
+        <Form.FieldErrors />
+      </Form.Field>
 
-      <FormField {form} name="pdfFile">
-        <FormControl>
+      <Form.Field {form} name="pdfFile">
+        <Form.Control>
           {#snippet children({ props }: { props: Control })}
-            <FormLabel required={!isEditing}>PDF File</FormLabel>
+            <Form.Label required={!isEditing}>PDF File</Form.Label>
             <Input
               {...props}
               on:input={(e) =>
@@ -104,15 +99,15 @@
               accept="application/pdf"
             />
           {/snippet}
-        </FormControl>
-        <FormDescription>Upload your score PDF file</FormDescription>
-        <FormFieldErrors />
-      </FormField>
+        </Form.Control>
+        <Form.Description>Upload your score PDF file</Form.Description>
+        <Form.FieldErrors />
+      </Form.Field>
 
-      <FormField {form} name="audioFile">
-        <FormControl>
+      <Form.Field {form} name="audioFile">
+        <Form.Control>
           {#snippet children({ props }: { props: Control })}
-            <FormLabel required={!isEditing}>Audio File</FormLabel>
+            <Form.Label required={!isEditing}>Audio File</Form.Label>
             <Input
               {...props}
               on:input={(e) =>
@@ -122,11 +117,11 @@
               accept="audio/mpeg"
             />
           {/snippet}
-        </FormControl>
-        <FormDescription>Upload your audio MP3 file</FormDescription>
-        <FormFieldErrors />
-      </FormField>
-      <FormButton loading={$delayed}>Submit</FormButton>
+        </Form.Control>
+        <Form.Description>Upload your audio MP3 file</Form.Description>
+        <Form.FieldErrors />
+      </Form.Field>
+      <Form.Button loading={$delayed}>Submit</Form.Button>
     </form>
   </div>
 </div>

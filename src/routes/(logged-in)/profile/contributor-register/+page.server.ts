@@ -1,10 +1,22 @@
 import type { PageServerLoad, Actions } from "./$types.js";
-import { fail, message, superValidate } from "sveltekit-superforms";
+import { fail, superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 import { contributorRegisterSchema } from "$lib/model"
+import { redirect } from "@sveltejs/kit";
 
 export const load: PageServerLoad = async ({ parent }) => {
   const data = await parent()
+  const { user } = data
+
+  if (user?.role_name !== "user" && user?.is_verified) {
+    return fail(401, {
+      form: null,
+    });
+  }
+
+  if(user?.role_name === 'contributor'){
+    return redirect(303, '/contributor')
+  }
 
   const initialData = {
     full_name: data.user?.name,
@@ -31,7 +43,7 @@ export const actions: Actions = {
       },
       body: JSON.stringify(form.data),
     }).then((res) => res.json());
-    console.log({res})
+    console.log({ res })
 
     if (res?.meta?.code !== 201) {
       return fail(400, {
@@ -39,6 +51,6 @@ export const actions: Actions = {
       });
     }
 
-    return message(form, "Contributor request sent successfully!");
+    return redirect(303, "http://localhost:8080/oauth2/logout/google")
   }
 }

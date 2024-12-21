@@ -12,7 +12,6 @@
 </script>
 
 <div>
-  <pre>{score.title}</pre>
   <h5 class="card-title">{score.title}</h5>
   <iframe
     title={score.title}

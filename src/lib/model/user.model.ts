@@ -10,6 +10,6 @@ export const userSchema = z.object({
   email: z.string(),
   name: z.string(),
   role_name: roleNameSchema,
-  is_verified: z.boolean().optional(),
-  verified_at: timeSchema.optional(),
+  is_verified: z.boolean().nullish(),
+  verified_at: timeSchema.nullish(),
 })

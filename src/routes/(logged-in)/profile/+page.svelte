@@ -22,3 +22,9 @@
     <Button>Register as contributor</Button>
   </a>
 {/if}
+
+{#if data.user?.role_name === "contributor"}
+  <a href="/contributor">
+    <Button>Contributor Page</Button>
+  </a>
+{/if}

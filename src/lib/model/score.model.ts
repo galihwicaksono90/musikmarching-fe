@@ -10,6 +10,7 @@ export const scoreSchema = z.object({
   pdf_image_urls: z.string().array(),
   audio_url: z.string().nullable(),
   is_verified: z.boolean(),
+  verified_at: timeSchema.nullish(),
   created_at: timeSchema,
   updated_at: timeSchema.nullish(),
   deleted_at: timeSchema.nullish(),

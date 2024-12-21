@@ -8,7 +8,7 @@
 <a href="http://localhost:8080/oauth2/google">Login</a>
 <a href="http://localhost:8080/oauth2/logout/google">Logout</a>
 
-<!-- <pre>{JSON.stringify(data, null, 4)}</pre> -->
+<pre>{JSON.stringify(data.user, null, 4)}</pre>
 {#if data.user?.email}
 	<h1>{data.user.email}</h1>
 {/if}

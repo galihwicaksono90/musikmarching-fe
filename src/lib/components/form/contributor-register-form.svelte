@@ -1,15 +1,10 @@
 <script lang="ts">
   import {
-    FormField,
-    FormControl,
-    FormDescription,
-    FormFieldErrors,
-    FormLabel,
-    FormButton,
-    Input,
     Avatar,
     AvatarFallback,
+    Input,
   } from "$lib/components/ui";
+  import * as Form from "$lib/components/ui/form"
   import { Control } from "formsnap";
   import { contributorRegisterSchema } from "$lib/model";
   import {
@@ -50,10 +45,10 @@
     <AvatarFallback>{avatarName}</AvatarFallback>
   </Avatar>
 
-  <FormField {form} name="full_name">
-    <FormControl>
+  <Form.Field {form} name="full_name">
+    <Form.Control>
       {#snippet children({ props }: { props: Control })}
-        <FormLabel required>Full Name</FormLabel>
+        <Form.Label required>Full Name</Form.Label>
         <Input
           {...props}
           bind:value={$formData.full_name}
@@ -61,9 +56,9 @@
           type="text"
         />
       {/snippet}
-    </FormControl>
-    <FormDescription>Enter your full name.</FormDescription>
-    <FormFieldErrors />
-  </FormField>
-  <FormButton loading={$delayed}>Register</FormButton>
+    </Form.Control>
+    <Form.Description>Enter your full name.</Form.Description>
+    <Form.FieldErrors />
+  </Form.Field>
+  <Form.Button loading={$delayed}>Register</Form.Button>
 </form>

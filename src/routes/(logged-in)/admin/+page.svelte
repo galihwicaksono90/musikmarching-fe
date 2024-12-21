@@ -3,5 +3,8 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<h1>Admin Page</h1>
-<pre>{JSON.stringify(data, null, 4)}</pre>
+<div class="flex">
+	<h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+		Hello Admin {data.user.name}!
+	</h1>
+</div>
