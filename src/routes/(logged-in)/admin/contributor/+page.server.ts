@@ -4,7 +4,6 @@ import { fail } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ fetch }) => {
   const res = await fetch('http://localhost:8080/api/v1/admin/contributors').then((r) => r.json());
-  console.log({ res: res.data[0].scores})
   const contributor = contributorAccountScoreSchema.array().safeParse(res.data)
 
   if (!contributor.success) {

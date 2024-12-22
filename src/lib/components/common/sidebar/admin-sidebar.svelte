@@ -27,6 +27,11 @@
       href: "/admin/contributor",
       icon: ShoppingCart,
     },
+    {
+      title: "Purchases",
+      href: "/admin/purchases",
+      icon: ShoppingCart,
+    },
   ];
 </script>
 

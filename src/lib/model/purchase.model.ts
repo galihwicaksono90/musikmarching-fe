@@ -17,8 +17,9 @@ export const purchaseSchema = z.object({
   // deleted_at: z.string().datetime().nullish(),
 })
 
+export type Purchase = z.infer<typeof purchaseSchema>;
+
 export const uploadPurchaseProofFormSchema = z.object({
   imageFile: z.instanceof(File),
 });
 
-export type Purchase = z.infer<typeof purchaseSchema>;
