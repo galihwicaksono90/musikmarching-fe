@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import {timeSchema} from './time.model'
+import { timeSchema } from './time.model'
 
 export const purchaseSchema = z.object({
   id: z.string().uuid(),
@@ -11,8 +11,14 @@ export const purchaseSchema = z.object({
   is_verified: z.boolean(),
   // verified_at: z.string().datetime().nullish(),
   created_at: timeSchema,
+  payment_proof_url: z.string().nullish(),
+  paid_at: timeSchema.nullish(),
   // updated_at: z.string().datetime().nullish(),
   // deleted_at: z.string().datetime().nullish(),
 })
+
+export const uploadPurchaseProofFormSchema = z.object({
+  imageFile: z.instanceof(File),
+});
 
 export type Purchase = z.infer<typeof purchaseSchema>;

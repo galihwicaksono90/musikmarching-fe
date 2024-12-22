@@ -9,7 +9,7 @@
 <pre>{JSON.stringify(data.user, null, 4)}</pre>
 <pre>{JSON.stringify(data.score, null, 4)}</pre>
 {#if !!user}
-  <form method="POST" action={`?/purchase`}>
+  <form method="POST" action={`?/purchase`} >
     <button type="submit">Purchase!</button>
   </form>
 {/if}

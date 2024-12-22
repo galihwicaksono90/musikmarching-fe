@@ -25,8 +25,8 @@ export const actions: Actions = {
       method: 'POST',
     }).then((r) => r.json());
 
-    console.log({ res })
+    console.log({ purchaseRes: res })
 
-    throw redirect(303, `/purchase/${res.data}`);
+    throw redirect(303, `/profile/purchase/${res.data}`);
   }
 }
