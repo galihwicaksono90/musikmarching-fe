@@ -16,6 +16,19 @@ export const scoreSchema = z.object({
   deleted_at: timeSchema.nullish(),
 })
 
+export const publicScoreSchema = z.object({
+  id: z.string().uuid(),
+  title: z.string(),
+  price: z.number(),
+  pdf_image_urls: z.string().array(),
+  audio_url: z.string(),
+  is_verified: z.boolean(),
+  verified_at: timeSchema.nullish(),
+  created_at: timeSchema,
+})
+
+export type PublicScore = z.infer<typeof publicScoreSchema>;
+
 export type Score = z.infer<typeof scoreSchema>;
 
 export const contributorScoreSchema = scoreSchema.pick({
