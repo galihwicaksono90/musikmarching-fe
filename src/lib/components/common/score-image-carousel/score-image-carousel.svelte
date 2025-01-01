@@ -6,7 +6,7 @@
 
 <Carousel.Root class="w-full max-w-xs">
   <Carousel.Content>
-    {#each images as image (image)}
+    {#each images as image, index (index)}
       <Carousel.Item>
         <div class="p-1">
           <Card.Root>

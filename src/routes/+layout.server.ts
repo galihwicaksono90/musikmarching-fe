@@ -3,6 +3,7 @@ import { userSchema } from "$lib/model"
 
 export const load: LayoutServerLoad = async ({ fetch }) => {
   const user = await fetch("http://localhost:8080/api/v1/auth/me").then((r) => r.json());
+
   const parsedUser = userSchema.safeParse(user.data);
 
   if (!parsedUser.success) {
@@ -12,6 +13,6 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
   }
 
   return {
-    user: parsedUser.data,
+    user: parsedUser.data, 
   };
 };

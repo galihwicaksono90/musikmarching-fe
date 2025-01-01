@@ -5,6 +5,7 @@ import { timeSchema } from './time.model';
 export const scoreSchema = z.object({
   id: z.string(),
   title: z.string(),
+  description: z.string().nullish(),
   price: z.number(),
   pdf_url: z.string().nullable(),
   pdf_image_urls: z.string().array(),
@@ -19,12 +20,18 @@ export const scoreSchema = z.object({
 export const publicScoreSchema = z.object({
   id: z.string().uuid(),
   title: z.string(),
+  description: z.string().nullish(),
   price: z.number(),
   pdf_image_urls: z.string().array(),
   audio_url: z.string(),
+  created_at: timeSchema,
+  email: z.string(),
+  full_name: z.string(),
   is_verified: z.boolean(),
   verified_at: timeSchema.nullish(),
-  created_at: timeSchema,
+  instruments: z.string().array(),
+  allocations: z.string().array(),
+  categories: z.string().array(),
 })
 
 export type PublicScore = z.infer<typeof publicScoreSchema>;

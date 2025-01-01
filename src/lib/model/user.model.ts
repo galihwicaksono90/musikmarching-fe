@@ -13,3 +13,5 @@ export const userSchema = z.object({
   is_verified: z.boolean().nullish(),
   verified_at: timeSchema.nullish(),
 })
+
+export type User = z.infer<typeof userSchema>;
