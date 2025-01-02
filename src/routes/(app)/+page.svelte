@@ -8,7 +8,7 @@
 </script>
 
 <div class="flex flex-col md:flex-row gap-8"> 
-	<div class="min-w-28">
+	<div class="min-w-48">
 		<MainSearchForm
 			data={data.form}
 			instrumentOptions={data.instrumentOptions}

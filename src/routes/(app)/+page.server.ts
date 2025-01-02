@@ -30,6 +30,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
   const scoresData = await fetch("http://localhost:8080/api/v1/score" + urlParamsString).then((r) => r.json());
 
   const scores = z.array(publicScoreSchema).safeParse(scoresData.data);
+
   if (scores.success) {
     data.scores = scores.data;
   }
@@ -47,13 +48,15 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
     data.allocationOptions = tags.data.allocations
   }
 
+
   const form = await superValidate({
     title: url.searchParams.get('title') ?? '',
     instrument: instrumentsParams,
     category: categoriesParams,
-    allocation: allocationsParams
-  },
-    zod(mainSearchFormSchema));
+    allocation: allocationsParams,
+    difficulty: url.searchParams.get('difficulty') ?? null,
+    contentType: url.searchParams.get('content_type') ?? null,
+  }, zod(mainSearchFormSchema));
 
   return { ...data, form };
 };
@@ -61,13 +64,20 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 export const actions: Actions = {
   default: async (event) => {
     const form = await superValidate(event, zod(mainSearchFormSchema));
-    const url = new URL('http://localhost:8080/api/v1/score');
-
-    // url.searchParams.append('limit', '1');
+    const url = new URL('http://localhost:5173');
 
     if (form.data.title && form.data.title.length > 0) {
       url.searchParams.append('title', form.data.title);
     }
+
+    if (form.data.difficulty) {
+      url.searchParams.append('difficulty', form.data.difficulty);
+    }
+
+    if (form.data.contentType) {
+      url.searchParams.append('content_type', form.data.contentType);
+    }
+
 
     form.data.instrument.forEach((i) => {
       url.searchParams.append('instruments', i);
@@ -81,6 +91,6 @@ export const actions: Actions = {
       url.searchParams.append('allocations', i);
     });
 
-    redirect(303, 'http://localhost:5173?' + url.searchParams.toString())
-  }
+    redirect(303, url.href)
+  },
 }

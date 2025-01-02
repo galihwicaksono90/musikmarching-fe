@@ -1,11 +1,19 @@
 <script lang="ts">
   import { Input } from "$lib/components/ui";
   import * as Form from "$lib/components/ui/form";
+  import * as Select from "$lib/components/ui/select";
   import { Button, Checkbox } from "$lib/components/ui";
-  import SearchIcon from "lucide-svelte/icons/search";
+  import CircleX from "lucide-svelte/icons/circle-x";
   import type { Props } from "./main-search-form.model";
   import { superForm } from "sveltekit-superforms/client";
-  import { Tag } from "lucide-svelte";
+  import {
+    contentType,
+    contentTypeLabels,
+    difficulties,
+    difficultyLabels,
+    type ContentType,
+    type Difficulty,
+  } from "$lib/model";
 
   let { data, instrumentOptions, categoryOptions, allocationOptions }: Props =
     $props();
@@ -17,7 +25,7 @@
     },
   });
 
-  const { form: formData, enhance } = form;
+  const { form: formData, enhance, reset } = form;
 
   function addItem(id: string, name: "instrument" | "category" | "allocation") {
     $formData[name] = [...$formData[name], id];
@@ -29,16 +37,34 @@
   ) {
     $formData[name] = $formData[name].filter((i) => i !== id);
   }
+
+  let difficultyValue = $derived(
+    $formData.difficulty
+      ? {
+          value: $formData.difficulty,
+          label: difficultyLabels[$formData.difficulty as Difficulty],
+        }
+      : null,
+  );
+
+  let contentTypeValue = $derived(
+    $formData.contentType
+      ? {
+          value: $formData.contentType,
+          label: contentTypeLabels[$formData.contentType as ContentType],
+        }
+      : null,
+  );
 </script>
 
 <form
-  class="flex flex-col gap-2"
+  class="flex flex-col gap-4"
   method="POST"
   use:enhance
   id="main-search-form"
 >
   <div class="flex items-center gap-2 flex-1">
-    <SearchIcon class="h-6 w-6" />
+    <!-- <SearchIcon class="h-6 w-6" /> -->
     <Form.Field {form} name="title" class="flex-1">
       <Form.Control>
         <Input
@@ -162,67 +188,69 @@
     </div>
   </Form.Fieldset>
 
-  <div class="flex gap-4">
-    <!-- <Form.Field {form} name="instrument"> -->
-    <!--   <Form.Control> -->
-    <!--     <Select.Root multiple> -->
-    <!--       <Select.Trigger class="xl:w-[180px] w-full"> -->
-    <!--         <Select.Value placeholder="Pilih instrumen" /> -->
-    <!--       </Select.Trigger> -->
-    <!--       <Select.Content> -->
-    <!--         <Select.Group> -->
-    <!--           <Select.Label>Instrumen</Select.Label> -->
-    <!--           {#each instrumentOptions as item} -->
-    <!--             <Select.Item value={item.name} label={item.name} -->
-    <!--               >{item.name}</Select.Item -->
-    <!--             > -->
-    <!--           {/each} -->
-    <!--         </Select.Group> -->
-    <!--       </Select.Content> -->
-    <!--       <Select.Input name="instrument" /> -->
-    <!--     </Select.Root> -->
-    <!--   </Form.Control> -->
-    <!-- </Form.Field> -->
+  <Form.Field {form} name="difficulty">
+    <Form.Control let:attrs>
+      <Form.Label>Tingkat Kesulitan</Form.Label>
 
-    <!-- <Form.Field {form} name="allocation"> -->
-    <!--   <Form.Control> -->
-    <!--     <Select.Root multiple> -->
-    <!--       <Select.Trigger class="xl:w-[180px] w-full"> -->
-    <!--         <Select.Value placeholder="Pilih Peruntukan" /> -->
-    <!--       </Select.Trigger> -->
-    <!--       <Select.Content> -->
-    <!--         <Select.Group> -->
-    <!--           <Select.Label>Peruntukan</Select.Label> -->
-    <!--           {#each allocationOptions as item} -->
-    <!--             <Select.Item value={item.name} label={item.name} -->
-    <!--               >{item.name}</Select.Item -->
-    <!--             > -->
-    <!--           {/each} -->
-    <!--         </Select.Group> -->
-    <!--       </Select.Content> -->
-    <!--       <Select.Input name="allocation" /> -->
-    <!--     </Select.Root> -->
-    <!--   </Form.Control> -->
-    <!-- </Form.Field> -->
+      <Select.Root
+        selected={difficultyValue as any}
+        onSelectedChange={(v) => {
+          v && ($formData.difficulty = v.value as string);
+        }}
+      >
+        <div class="flex items-center gap-2">
+          <Select.Trigger {...attrs}>
+            <Select.Value placeholder="Tingkat Kesulitan" />
+          </Select.Trigger>
+          <button
+            class="rounded-full"
+            onclick={() => ($formData.difficulty = undefined)}
+            type="button"><CircleX class="h-4 w-4" /></button
+          >
+        </div>
+        <Select.Content>
+          {#each difficulties as item}
+            <Select.Item value={item} label={difficultyLabels[item]} />
+          {/each}
+        </Select.Content>
+      </Select.Root>
+      <input hidden bind:value={$formData.difficulty} name={attrs.name} />
+    </Form.Control>
+  </Form.Field>
 
-    <!-- <TagSelect -->
-    <!--   options={instrumentOptions} -->
-    <!--   label="Instrumen" -->
-    <!--   name="instrument" -->
-    <!--   placeholder="Jenis instrumen" -->
-    <!-- /> -->
-    <!-- <TagSelect -->
-    <!--   options={categoryOptions} -->
-    <!--   label="Kategori" -->
-    <!--   name="category" -->
-    <!--   placeholder="Kategori" -->
-    <!-- /> -->
-    <!-- <TagSelect -->
-    <!--   options={allocationOptions} -->
-    <!--   label="Peruntukan" -->
-    <!--   name="allocation" -->
-    <!--   placeholder="Peruntukan" -->
-    <!-- /> -->
+  <Form.Field {form} name="contentType">
+    <Form.Control let:attrs>
+      <Form.Label>Jenis Konten</Form.Label>
+      <Select.Root
+        selected={contentTypeValue as any}
+        onSelectedChange={(v) => {
+          v && ($formData.contentType = v.value as string);
+        }}
+      >
+        <div class="flex items-center gap-2">
+          <Select.Trigger {...attrs}>
+            <Select.Value placeholder="Jenis konten" />
+          </Select.Trigger>
+          <button
+            class="rounded-full"
+            onclick={() => ($formData.contentType = undefined)}
+            type="button"><CircleX class="h-4 w-4" /></button
+          >
+        </div>
+        <Select.Content>
+          {#each contentType as item}
+            <Select.Item value={item} label={contentTypeLabels[item]} />
+          {/each}
+        </Select.Content>
+      </Select.Root>
+      <input hidden bind:value={$formData.contentType} name={attrs.name} />
+    </Form.Control>
+  </Form.Field>
+
+  <div class="flex flex-col gap-2 mt-8">
+    <Button type="submit">Cari</Button>
+    <a href="/">
+      <Button type="button" variant="ghost" class="w-full">Reset</Button>
+    </a>
   </div>
-  <Button type="submit">Cari</Button>
 </form>
