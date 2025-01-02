@@ -64,7 +64,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 export const actions: Actions = {
   default: async (event) => {
     const form = await superValidate(event, zod(mainSearchFormSchema));
-    const url = new URL('http://localhost:5173');
+    const url = new URL(event.url.origin);
 
     if (form.data.title && form.data.title.length > 0) {
       url.searchParams.append('title', form.data.title);
