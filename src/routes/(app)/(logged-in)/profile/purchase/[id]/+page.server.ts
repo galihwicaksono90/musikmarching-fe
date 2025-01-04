@@ -1,22 +1,38 @@
 import type { PageServerLoad, Actions } from "./$types";
-import { purchaseSchema, uploadPurchaseProofFormSchema } from "$lib/model"
+import { purchasedScoreSchema, purchaseSchema, uploadPurchaseProofFormSchema } from "$lib/model"
 import { error } from "@sveltejs/kit";
 import { fail, message, superValidate, withFiles } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
+
   const purchase = await fetch(`http://localhost:8080/api/v1/purchase/${params.id}`, {
     method: 'GET',
   }).then((r) => r.json());
 
   if (purchase?.meta?.code !== 200) {
-    throw error(404, 'Thing not found');
+    throw error(404, 'Not found');
   }
 
   const parsedPurchase = purchaseSchema.safeParse(purchase.data);
-
   if (!parsedPurchase.success) {
-    throw error(404, 'Thing not found');
+    throw error(404, 'Not found');
+  }
+
+  if (parsedPurchase.data.is_verified) {
+    const purchasedScore = await fetch(`http://localhost:8080/api/v1/purchase/score/${parsedPurchase.data.id}`, {
+      method: 'GET',
+    }).then((r) => r.json());
+    console.log({ purchasedScore })
+
+    const parsedScore = purchasedScoreSchema.safeParse(purchasedScore.data)
+    if (parsedScore.success) {
+      return {
+        purchase: parsedPurchase.data,
+        form: await superValidate(zod(uploadPurchaseProofFormSchema)),
+        score: parsedScore.data
+      };
+    }
   }
 
   return {
@@ -43,18 +59,20 @@ export const actions: Actions = {
       method: "PUT",
       body: formData,
     }).then((res) => res.json());
-    console.log({result})
 
-    if (result?.meta?.code === 200) {
-      return fail(400, withFiles({
-        form,
-      }));
+    if (result?.meta?.code !== 200) {
+      return message(withFiles(form), {
+        type: 'error',
+        message: 'Gagal upload',
+      }, {
+        status: result.meta.code,
+      })
     }
 
-    return message(form, "Score updated successfully!")
-    // return withFiles({
-    //   form,
-    // });
+    return message(withFiles(form), {
+      type: 'success',
+      message: 'Berhasil upload',
+    })
   },
 };
 

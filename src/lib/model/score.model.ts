@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { pdfFileSchema, audioFileSchema } from './file.model';
 import { timeSchema } from './time.model';
 
-export const difficulties =  [ 'beginner', 'intermediate', 'advanced' ] as const;
+export const difficulties = ['beginner', 'intermediate', 'advanced'] as const;
 
 export const difficultySchema = z.enum(difficulties);
 
@@ -14,7 +14,7 @@ export const difficultyLabels: Record<Difficulty, string> = {
   advanced: 'Advanced',
 } as const;
 
-export const contentType =  [ 'exclusive', 'non-exclusive' ] as const;
+export const contentType = ['exclusive', 'non-exclusive'] as const;
 
 export const contentTypeSchema = z.enum(contentType);
 
@@ -26,22 +26,6 @@ export const contentTypeLabels: Record<ContentType, string> = {
 } as const;
 
 export const scoreSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  description: z.string().nullish(),
-  price: z.number(),
-  difficulty: difficultySchema,
-  pdf_url: z.string().nullable(),
-  pdf_image_urls: z.string().array(),
-  audio_url: z.string().nullable(),
-  is_verified: z.boolean(),
-  verified_at: timeSchema.nullish(),
-  created_at: timeSchema,
-  updated_at: timeSchema.nullish(),
-  deleted_at: timeSchema.nullish(),
-})
-
-export const publicScoreSchema = z.object({
   id: z.string().uuid(),
   title: z.string(),
   description: z.string().nullish(),
@@ -50,19 +34,60 @@ export const publicScoreSchema = z.object({
   content_type: contentTypeSchema,
   pdf_image_urls: z.string().array(),
   audio_url: z.string(),
-  created_at: timeSchema,
-  email: z.string(),
-  full_name: z.string(),
+  pdf_url: z.string(),
   is_verified: z.boolean(),
   verified_at: timeSchema.nullish(),
   instruments: z.string().array(),
   allocations: z.string().array(),
   categories: z.string().array(),
+  created_at: timeSchema,
+  updated_at: timeSchema.nullish(),
+  deleted_at: timeSchema.nullish(),
 })
+
+export const publicScoreSchema = scoreSchema.pick({
+  id: true,
+  title: true,
+  description: true,
+  price: true,
+  difficulty: true,
+  content_type: true,
+  pdf_image_urls: true,
+  audio_url: true,
+  created_at: true,
+  is_verified: true,
+  verified_at: true,
+  instruments: true,
+  allocations: true,
+  categories: true,
+}).extend({
+  full_name: z.string(),
+  email: z.string(),
+})
+
+export const purchasedScoreSchema = scoreSchema.pick({
+  id: true,
+  title: true,
+  description: true,
+  difficulty: true,
+  content_type: true,
+  pdf_url: true,
+  pdf_image_urls: true,
+  price: true,
+  audio_url: true,
+  is_verified: true,
+}).extend({
+  full_name: z.string(),
+  email: z.string(),
+})
+
+
 
 export type PublicScore = z.infer<typeof publicScoreSchema>;
 
 export type Score = z.infer<typeof scoreSchema>;
+
+export type PurchasedScore = z.infer<typeof purchasedScoreSchema>;
 
 export const contributorScoreSchema = scoreSchema.pick({
   id: true,

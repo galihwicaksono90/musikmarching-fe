@@ -1,10 +1,13 @@
 <script lang="ts">
   import * as Card from "$lib/components/ui/card";
-  import { type PublicScore, contentTypeLabels, difficultyLabels } from "$lib/model";
+  import {
+    type PublicScore,
+    contentTypeLabels,
+    difficultyLabels,
+  } from "$lib/model";
   import { Badge, Button } from "$lib/components/ui";
 
-  let { score, isVerified }: { score: PublicScore; isVerified: boolean } =
-    $props();
+  let { score }: { score: PublicScore; isVerified: boolean } = $props();
 
   const renderTags = (tags: string[]) => {
     return tags.join(", ");
@@ -42,13 +45,11 @@
     <div>Peruntukan</div>
     {@render badges(score.allocations)}
   </Card.Content>
-  {#if isVerified}
-    <Card.Footer>
-      <div class="w-full">
-        <a href={`/score/${score.id}`}>
-          <Button class="w-full">Lihat</Button>
-        </a>
-      </div>
-    </Card.Footer>
-  {/if}
+  <Card.Footer>
+    <div class="w-full">
+      <a href={`/score/${score.id}`}>
+        <Button class="w-full">Lihat</Button>
+      </a>
+    </div>
+  </Card.Footer>
 </Card.Root>

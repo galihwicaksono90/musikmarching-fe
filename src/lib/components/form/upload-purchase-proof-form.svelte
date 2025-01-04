@@ -9,6 +9,8 @@
     superForm,
   } from "sveltekit-superforms/client";
   import { zodClient } from "sveltekit-superforms/adapters";
+  import { invalidateAll } from "$app/navigation";
+  import { toast } from "$lib/util";
 
   let {
     data,
@@ -18,6 +20,15 @@
 
   const form = superForm(data, {
     validators: zodClient(uploadPurchaseProofFormSchema),
+    onUpdated: ({ form }) => {
+      if (!form.message) return;
+
+      toast(form.message);
+
+      if (form.message.type === "success") {
+        invalidateAll();
+      }
+    },
   });
 
   const { form: formData, enhance, delayed } = form;
