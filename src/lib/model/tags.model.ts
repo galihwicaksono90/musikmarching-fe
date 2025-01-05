@@ -1,5 +1,7 @@
 import {z} from 'zod';
 
+export type TagType = 'instruments' | 'categories' | 'allocations';
+
 const tagSchema = z.object({
   id: z.number(),
   name: z.string(),

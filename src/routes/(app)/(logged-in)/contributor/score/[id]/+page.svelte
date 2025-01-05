@@ -8,5 +8,13 @@
 
 <h1>Contributor Score Page</h1>
 
-<ContributorScoreForm data={data.form} isEditing />
+<section class="flex flex-col gap-8">
+<ContributorScoreForm
+  data={data.form}
+  isEditing
+  instrumentOptions={data.tags.instrumentOptions}
+  categoryOptions={data.tags.categoryOptions}
+  allocationOptions={data.tags.allocationOptions}
+/>
 <ScoreCard score={data.score} />
+</section>

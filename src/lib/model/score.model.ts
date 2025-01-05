@@ -14,7 +14,7 @@ export const difficultyLabels: Record<Difficulty, string> = {
   advanced: 'Advanced',
 } as const;
 
-export const contentType = ['exclusive', 'non-exclusive'] as const;
+export const contentType = ['non-exclusive', 'exclusive'] as const;
 
 export const contentTypeSchema = z.enum(contentType);
 
@@ -93,28 +93,49 @@ export const contributorScoreSchema = scoreSchema.pick({
   id: true,
   title: true,
   is_verified: true,
+  description: true,
   price: true,
   audio_url: true,
   pdf_url: true,
   pdf_image_urls: true,
+  difficulty: true,
+  content_type: true,
+  verified_at: true,
 }).extend({
-  email: z.string(),
-  name: z.string(),
+  contributor_id: z.string().uuid(),
+  categories: z.number().array(),
+  instruments: z.number().array(),
+  allocations: z.number().array(),
 })
 
 export type ContributorScore = z.infer<typeof contributorScoreSchema>;
 
 export const createScoreFormSchema = z.object({
   title: z.string().min(5).max(50),
-  price: z.number({ message: "Not a valid number" }).lte(100000000, { message: "Kemahalan. Ngga ada yang beli nanti" }),
+  description: z.string().min(5).max(255).default(''),
+  price: z
+    .number({ message: "Not a valid number" })
+    .gte(0, { message: "Harga tidak boleh negatif" })
+    .lte(100000000),
+  difficulty: difficultySchema,
+  contentType: contentTypeSchema,
   pdfFile: pdfFileSchema,
   audioFile: audioFileSchema,
+  categories: z.number().array(),
+  instruments: z.number().array(),
+  allocations: z.number().array(),
 });
 
 export const updateScoreFormSchema = createScoreFormSchema
   .pick({
     title: true,
+    description: true,
     price: true,
+    difficulty: true,
+    contentType: true,
+    categories: true,
+    instruments: true,
+    allocations: true,
   })
   .extend({
     pdfFile: pdfFileSchema.optional(),
