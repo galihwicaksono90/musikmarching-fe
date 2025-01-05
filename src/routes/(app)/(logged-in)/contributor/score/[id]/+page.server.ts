@@ -65,22 +65,27 @@ export const actions: Actions = {
       formData.append("audio_file", form.data.audioFile)
     }
 
-    const res = await event
-      .fetch(`http://localhost:8080/api/v1/contributor/score/${event.params.id}`, {
-        method: 'PUT',
-        body: formData,
-      }).then((r) => r.json())
+    try {
 
-    if (res?.meta?.code !== 200) {
+      const res = await event
+        .fetch(`http://localhost:8080/api/v1/contributor/score/${event.params.id}`, {
+          method: 'PUT',
+          body: formData,
+        }).then((r) => r.json())
+
+      if (res?.meta?.code !== 200) {
+        return message(withFiles(form), {
+          type: 'error',
+          message: 'Something went wrong',
+        })
+      }
+
       return message(withFiles(form), {
-        type: 'error',
-        message: 'Something went wrong',
+        type: 'success',
+        message: "Score updated successfully!"
       })
+    } catch (e) {
+      return fail(500, withFiles(form))
     }
-
-    return message(withFiles( form ), {
-      type: 'success',
-      message: "Score updated successfully!"
-    })
   }
 }
