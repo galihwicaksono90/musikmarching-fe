@@ -1,6 +1,7 @@
 import { message, superValidate, withFiles } from "sveltekit-superforms";
 import type { PageServerLoad } from "./$types";
-import { contributorScoreSchema, updateScoreFormSchema } from '$lib/model'
+import { contributorScoreSchema, } from '$lib/model'
+import { updateScoreFormSchema } from '$lib/components/form'
 import { error, fail, type Actions } from "@sveltejs/kit";
 import { zod } from "sveltekit-superforms/adapters";
 

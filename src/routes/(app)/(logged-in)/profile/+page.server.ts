@@ -1,4 +1,5 @@
-import { purchaseSchema, uploadPurchaseProofFormSchema } from "$lib/model";
+import { purchaseSchema, } from "$lib/model";
+import { uploadPurchaseProofFormSchema } from "$lib/components/form";
 import type { PageServerLoad, Actions } from "./$types";
 import { z } from "zod";
 import { fail } from "@sveltejs/kit";

@@ -1,6 +1,6 @@
 import type { PageServerLoad, Actions } from "./$types.js";
 import { superValidate, withFiles } from "sveltekit-superforms";
-import { createScoreFormSchema } from "$lib/model";
+import { createScoreFormSchema } from "$lib/components/form";
 import { zod } from "sveltekit-superforms/adapters";
 import { fail, redirect } from "@sveltejs/kit";
 

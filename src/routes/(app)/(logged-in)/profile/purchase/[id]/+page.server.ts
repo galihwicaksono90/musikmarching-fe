@@ -1,5 +1,6 @@
 import type { PageServerLoad, Actions } from "./$types";
-import { purchasedScoreSchema, purchaseSchema, uploadPurchaseProofFormSchema } from "$lib/model"
+import { purchasedScoreSchema, purchaseSchema } from "$lib/model"
+import { uploadPurchaseProofFormSchema } from "$lib/components/form"
 import { error } from "@sveltejs/kit";
 import { fail, message, superValidate, withFiles } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
