@@ -1,19 +1,16 @@
 <script lang="ts">
-  import {
-    Avatar,
-    AvatarFallback,
-    Input,
-  } from "$lib/components/ui";
-  import * as Form from "$lib/components/ui/form"
+  import { Avatar, AvatarFallback, Input } from "$lib/components/ui";
+  import * as Form from "$lib/components/ui/form";
   import { Control } from "formsnap";
-  import { contributorRegisterSchema } from "$lib/model";
+  import { contributorRegisterSchema } from "./contributor-register-form.model";
   import {
     type SuperValidated,
     type Infer,
     superForm,
   } from "sveltekit-superforms/client";
   import { zodClient } from "sveltekit-superforms/adapters";
-    import { toast } from "svelte-sonner";
+  import { toast } from "$lib/util";
+  import { invalidateAll } from "$app/navigation";
 
   let {
     data,
@@ -23,15 +20,16 @@
 
   const form = superForm(data, {
     validators: zodClient(contributorRegisterSchema),
+    onUpdated: ({ form }) => {
+      if (!form.message) return;
+      if (form.message.type === "success") {
+        invalidateAll();
+      }
+      toast({ type: form.message.type, message: form.message.message });
+    },
   });
 
-  const { form: formData, enhance, message , delayed} = form;
-
-  $effect(() => {
-    if(message){
-      toast.success($message)
-    }
-  })
+  const { form: formData, enhance, delayed } = form;
 
   const avatarName = $formData.full_name
     .split(" ")
@@ -40,7 +38,7 @@
     .toUpperCase();
 </script>
 
-<form action="?/register" method="POST" use:enhance class="flex flex-col gap-6">
+<form method="POST" use:enhance class="flex flex-col gap-6">
   <Avatar>
     <AvatarFallback>{avatarName}</AvatarFallback>
   </Avatar>

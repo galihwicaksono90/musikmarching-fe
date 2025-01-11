@@ -2,10 +2,6 @@ import {z} from 'zod';
 import {timeSchema} from './time.model'
 import { scoreSchema } from './score.model';
 
-export const contributorRegisterSchema = z.object({
-  full_name: z.string().min(5).max(250)
-})
-
 export const contributorSchema = z.object({
   id: z.string().uuid(),
   is_verified: z.boolean(),

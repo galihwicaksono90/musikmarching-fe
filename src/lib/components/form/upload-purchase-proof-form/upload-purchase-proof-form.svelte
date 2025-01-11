@@ -2,7 +2,7 @@
   import { Input } from "$lib/components/ui";
   import * as Form from "$lib/components/ui/form";
   import { Control } from "formsnap";
-  import { uploadPurchaseProofFormSchema } from "$lib/model";
+  import { uploadPurchaseProofFormSchema } from "./upload-purchase-proof-form.model";
   import {
     type SuperValidated,
     type Infer,

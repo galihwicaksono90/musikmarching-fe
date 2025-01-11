@@ -1,4 +1,4 @@
-export { default as ContributorScoreForm } from './contributor-score-form.svelte'
-export { default as ContributorRegisterForm } from './contributor-register-form.svelte'
-export { default as UploadPurchaseProofForm } from './upload-purchase-proof-form.svelte'
+export * from './contributor-score-form'
+export * from './contributor-register-form'
+export * from './upload-purchase-proof-form'
 export * from './main-search-form'

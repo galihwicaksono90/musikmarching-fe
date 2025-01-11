@@ -6,10 +6,8 @@
   import {
     contentType,
     contentTypeLabels,
-    createScoreFormSchema,
     difficulties,
     difficultyLabels,
-    updateScoreFormSchema,
     type ContentType,
     type Difficulty,
     type Instrument,
@@ -18,13 +16,17 @@
     type TagType,
   } from "$lib/model";
   import {
+    createScoreFormSchema,
+    updateScoreFormSchema,
+  } from "./contributor-score-form.model";
+  import {
     type SuperValidated,
     type Infer,
     superForm,
   } from "sveltekit-superforms/client";
   import { zodClient } from "sveltekit-superforms/adapters";
   import { invalidateAll } from "$app/navigation";
-    import { toast } from "$lib/util";
+  import { toast } from "$lib/util";
   // import SuperDebug from "sveltekit-superforms";
 
   type Props = {
@@ -49,13 +51,13 @@
     validators: zodClient(
       isEditing ? updateScoreFormSchema : createScoreFormSchema,
     ),
-    onUpdated: ({form}) => {
-      if(!form.message) return;
+    onUpdated: ({ form }) => {
+      if (!form.message) return;
 
       toast({
         type: form.message.type,
         message: form.message.message,
-      })
+      });
 
       if (isEditing) {
         invalidateAll();
@@ -63,7 +65,7 @@
     },
   });
 
-  const { form: formData, enhance, delayed , isTainted, tainted} = form;
+  const { form: formData, enhance, delayed, isTainted, tainted } = form;
 
   function addItem(id: number, name: TagType) {
     $formData[name] = [...$formData[name], id];

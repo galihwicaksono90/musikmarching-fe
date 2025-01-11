@@ -1,20 +1,19 @@
 import type { PageServerLoad, Actions } from "./$types.js";
-import { fail, superValidate } from "sveltekit-superforms";
+import { fail, message, superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
-import { contributorRegisterSchema } from "$lib/model"
+import { contributorRegisterSchema } from "$lib/components/form"
 import { redirect } from "@sveltejs/kit";
+import setCookie from "set-cookie-parser";
 
 export const load: PageServerLoad = async ({ parent }) => {
   const data = await parent()
   const { user } = data
 
   if (user?.role_name !== "user" && user?.is_verified) {
-    return fail(401, {
-      form: null,
-    });
+    return redirect(303, '/')
   }
 
-  if(user?.role_name === 'contributor'){
+  if (user?.role_name === 'contributor') {
     return redirect(303, '/contributor')
   }
 
@@ -28,7 +27,7 @@ export const load: PageServerLoad = async ({ parent }) => {
 };
 
 export const actions: Actions = {
-  register: async (event) => {
+  default: async (event) => {
     const form = await superValidate(event, zod(contributorRegisterSchema))
     if (!form.valid) {
       return fail(400, {
@@ -36,21 +35,53 @@ export const actions: Actions = {
       });
     }
 
-    const res = await event.fetch("http://localhost:8080/api/v1/account/contributor-request", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(form.data),
-    }).then((res) => res.json());
-    console.log({ res })
+    try {
 
-    if (res?.meta?.code !== 201) {
+      const res = await event.fetch("http://localhost:8080/api/v1/account/contributor-request", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form.data),
+        credentials: 'include',
+      })
+
+      const data = await res.json();
+      console.log({ data })
+
+      if (data?.meta?.code !== 201) {
+        return fail(400, {
+          form,
+        });
+      }
+
+      const cookies = res.headers.get('set-cookie');
+      if (cookies) {
+        const c = setCookie(cookies, {
+          map: true,
+          decodeValues: true,
+        })
+        const u = c["user-session"]
+        event.cookies.set(u.name, u.value, {
+          path: u.path ?? "/",
+          sameSite: "lax",
+          domain: u.domain,
+          httpOnly: u.httpOnly,
+          maxAge: u.maxAge,
+          expires: u.expires,
+          encode: v => v,
+        })
+      }
+    } catch (e) {
+      console.log(e);
       return fail(400, {
         form,
       });
     }
 
-    return redirect(303, "http://localhost:8080/oauth2/logout/google")
+    return message(form, {
+      type: 'success',
+      message: 'Contributor Registered'
+    })
   }
 }

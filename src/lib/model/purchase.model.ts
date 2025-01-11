@@ -18,8 +18,3 @@ export const purchaseSchema = z.object({
 })
 
 export type Purchase = z.infer<typeof purchaseSchema>;
-
-export const uploadPurchaseProofFormSchema = z.object({
-  imageFile: z.instanceof(File),
-});
-
