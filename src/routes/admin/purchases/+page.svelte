@@ -6,5 +6,4 @@
 </script>
 
 <h1>Purchase Page</h1>
-<!-- <pre>{JSON.stringify(data, null, 2)}</pre> -->
 <AdminPurchaseTable data={data.purchases} />

@@ -28,8 +28,18 @@
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content align="end">
 			<a href="/profile">
-				<DropdownMenu.Item>My Profile</DropdownMenu.Item>
+				<DropdownMenu.Item>Profil</DropdownMenu.Item>
 			</a>
+			{#if user.role_name === "contributor"}
+				<a href="/contributor">
+					<DropdownMenu.Item>Kontributor</DropdownMenu.Item>
+				</a>
+			{/if}
+			{#if user.role_name === "admin"}
+				<a href="/admin">
+					<DropdownMenu.Item>Admin</DropdownMenu.Item>
+				</a>
+			{/if}
 			<DropdownMenu.Separator />
 			<a href={PUBLIC_GOOGLE_LOGOUT_URL}>
 				<DropdownMenu.Item>Logout</DropdownMenu.Item>
@@ -40,16 +50,16 @@
 
 {#snippet loggedOut()}
 	<a href={PUBLIC_GOOGLE_LOGIN_URL}>
-		<Button variant="outline" class="font-bold" >
-			LOGIN
-		</Button>
+		<Button variant="outline" class="font-bold">LOGIN</Button>
 	</a>
 {/snippet}
 
 <div class="w-full bg-blue-900">
 	<nav class="flex justify-between h-16 container mx-auto items-center">
 		<a href="/">
-			<h1 class="text-lg font-semibold md:text-2xl text-white">Musik Marching</h1>
+			<h1 class="text-lg font-semibold md:text-2xl text-white">
+				Musik Marching
+			</h1>
 		</a>
 		{#if data.user}
 			{@render loggedIn(data.user)}

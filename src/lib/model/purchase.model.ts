@@ -13,6 +13,7 @@ export const purchaseSchema = z.object({
   created_at: timeSchema,
   payment_proof_url: z.string().nullish(),
   paid_at: timeSchema.nullish(),
+  full_name: z.string().nullish(),
   // updated_at: z.string().datetime().nullish(),
   // deleted_at: z.string().datetime().nullish(),
 })

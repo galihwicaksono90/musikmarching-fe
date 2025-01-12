@@ -17,6 +17,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 
   const parsedPurchase = purchaseSchema.safeParse(purchase.data);
   if (!parsedPurchase.success) {
+    console.log(JSON.stringify(parsedPurchase.error, null, 4))
     throw error(404, 'Not found');
   }
 

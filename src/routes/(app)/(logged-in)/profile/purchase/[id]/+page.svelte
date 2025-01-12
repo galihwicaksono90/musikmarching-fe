@@ -3,11 +3,12 @@
   import { UploadPurchaseProofForm } from "$lib/components/form";
   import { Button } from "$lib/components/ui";
   import { AudioPlayer } from "$lib/components/common";
-  import type { PurchasedScore } from "$lib/model";
+  import type { PurchasedScore, Purchase } from "$lib/model";
   import { getPurchaseStatusLabel, getPurchaseInvoiceNumber } from "$lib/util";
   import * as Dialog from "$lib/components/ui/dialog";
 
   let { data }: { data: PageData } = $props();
+
 </script>
 
 {#snippet purchaseProofModal(url: string)}
@@ -38,28 +39,26 @@
       scrolling="auto"
       height="600px"
       width="100%"
-    ></iframe>
-  </div>
+    ></iframe> </div>
   <div>
     <h4 class="text-md font-bold">Audio</h4>
     <AudioPlayer src={score.audio_url} />
   </div>
 {/snippet}
 
-<section class="flex flex-col gap-8">
-  {#if data.score}
-    {@render purchasedScore(data.score)}
-  {/if}
+{#snippet purcaseInvoice(purchase: Purchase)}
   <div class="flex flex-col gap-4">
     <div class="grid grid-cols-2 gap-4">
       <div>Invoice</div>
-      <div>: INV-{getPurchaseInvoiceNumber(data.purchase.invoice_serial)}</div>
+      <div>
+        : INV-{getPurchaseInvoiceNumber(purchase.invoice_serial)}
+      </div>
       <div>Judul</div>
-      <div>: {data.purchase.title}</div>
+      <div>: {purchase.title}</div>
       <div>Bukti pembayaran</div>
       <div>
-        : {#if data.purchase.payment_proof_url}
-          {@render purchaseProofModal(data.purchase.payment_proof_url)}
+        : {#if purchase.payment_proof_url}
+          {@render purchaseProofModal(purchase.payment_proof_url)}
         {:else}
           -
         {/if}
@@ -70,15 +69,34 @@
         {Intl.NumberFormat("id-ID", {
           style: "currency",
           currency: "IDR",
-        }).format(data.purchase.price + data.purchase.invoice_serial)}
+        }).format(purchase.price + purchase.invoice_serial)}
       </div>
       <div>Status</div>
-      <div>: {getPurchaseStatusLabel(data.purchase.is_verified)}</div>
+      <div>: {getPurchaseStatusLabel(purchase.is_verified)}</div>
     </div>
   </div>
+{/snippet}
+
+<section class="flex flex-col gap-8">
+  {#if data.score}
+    {@render purchasedScore(data.score)}
+  {/if}
   {#if !data.purchase.is_verified}
+    {@render purcaseInvoice(data.purchase)}
     <div class="flex gap-8 max-w-xl">
       <UploadPurchaseProofForm data={data.form} />
     </div>
+  {:else}
+    <Dialog.Root>
+      <Dialog.Trigger>
+        <Button>Pembayaran</Button>
+      </Dialog.Trigger>
+      <Dialog.Content>
+        <Dialog.Header>
+          <Dialog.Title>Pembayaran</Dialog.Title>
+        </Dialog.Header>
+        {@render purcaseInvoice(data.purchase)}
+      </Dialog.Content>
+    </Dialog.Root>
   {/if}
 </section>

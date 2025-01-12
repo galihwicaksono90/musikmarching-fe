@@ -1,5 +1,6 @@
 import type { LayoutServerLoad } from './$types';
 import { userSchema } from "$lib/model"
+import { redirect } from '@sveltejs/kit';
 
 export const load: LayoutServerLoad = async ({ fetch }) => {
   const user = await fetch("http://localhost:8080/api/v1/auth/me", {
