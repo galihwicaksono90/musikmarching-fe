@@ -121,7 +121,7 @@
     <div class="space-y-2">
       {#each instrumentOptions as item}
         {@const checked = $formData.instrument.includes(item.name)}
-        <div class="flex flex-row items-center space-x-3">
+        <div class="flex flex-row items-start space-x-3">
           <Form.Control let:attrs>
             <Checkbox
               {...attrs}
@@ -158,7 +158,7 @@
     <div class="space-y-2">
       {#each allocationOptions as item}
         {@const checked = $formData.allocation.includes(item.name)}
-        <div class="flex flex-row items-center space-x-3">
+        <div class="flex flex-row items-start space-x-3">
           <Form.Control let:attrs>
             <Checkbox
               {...attrs}

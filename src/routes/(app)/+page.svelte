@@ -1,10 +1,11 @@
 <script lang="ts">
 	import type { PageData } from "./$types";
 	import { PublicScoreCard } from "$lib/components/common";
-	import { Separator } from "$lib/components/ui";
+	import { Button, Separator } from "$lib/components/ui";
 	import { MainSearchForm } from "$lib/components/form";
 
 	let { data }: { data: PageData } = $props();
+
 </script>
 
 <div class="flex flex-col md:flex-row gap-8">

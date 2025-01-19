@@ -29,10 +29,10 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 
   const scoresData = await fetch("http://localhost:8080/api/v1/score" + urlParamsString).then((r) => r.json());
 
-  const scores = z.array(publicScoreSchema).safeParse(scoresData.data);
+  const scores = z.object({scores: publicScoreSchema.array(), count: z.number() }).safeParse(scoresData.data);
 
   if (scores.success) {
-    data.scores = scores.data;
+    data.scores = scores.data.scores;
   }
 
   const tagsData = await fetch("http://localhost:8080/api/v1/score/tags").then((r) => r.json());
