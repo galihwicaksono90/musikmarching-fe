@@ -1,5 +1,6 @@
 export * from './score-card'
 export * from './sidebar'
+export * from './pagination'
 export * from './audio-player'
 export * from './verified-status-badge'
 export * from './score-image-carousel'
