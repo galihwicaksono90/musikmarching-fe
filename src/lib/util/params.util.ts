@@ -1,6 +1,6 @@
 export class ParamsUtil {
 	public url: URL;
-	public limit: number = 5;
+	public limit: number = 6;
 
 	constructor({ url, limit }: {
 		url: URL,

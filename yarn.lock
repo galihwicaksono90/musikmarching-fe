@@ -985,7 +985,7 @@ binary-extensions@^2.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.3.0.tgz#f6e14a97858d327252200242d4ccfe522c445522"
   integrity sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==
 
-bits-ui@^0.22.0:
+bits-ui@0.22.0:
   version "0.22.0"
   resolved "https://registry.yarnpkg.com/bits-ui/-/bits-ui-0.22.0.tgz#9e59b20c843ab55aea3c17bc9007e87a4139c423"
   integrity sha512-r7Fw1HNgA4YxZBRcozl7oP0bheQ8EHh+kfMBZJgyFISix8t4p/nqDcHLmBgIiJ3T5XjYnJRorYDjIWaCfhb5fw==
@@ -1826,10 +1826,10 @@ lru-cache@^10.2.0:
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-10.4.3.tgz#410fc8a17b70e598013df257c2446b7f3383f119"
   integrity sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==
 
-lucide-svelte@^0.469.0:
-  version "0.469.0"
-  resolved "https://registry.yarnpkg.com/lucide-svelte/-/lucide-svelte-0.469.0.tgz#93c27d43ac12591ec38462363ea81b095d010086"
-  integrity sha512-PMIJ8jrFqVUsXJz4d1yfAQplaGhNOahwwkzbunha8DhpiD73xqX24n8dE1dPpUk3vcrdWVsHc1y/liHHotOnGQ==
+lucide-svelte@^0.483.0:
+  version "0.483.0"
+  resolved "https://registry.yarnpkg.com/lucide-svelte/-/lucide-svelte-0.483.0.tgz#ba333a31deec8a7a64cef99bcca3ad395e3a3bd6"
+  integrity sha512-MyMgEVLlFfPbyodGpkB+KCpyPkpjI7EKiFw1crA92B1ZXRK5hq5vTsGWAm9Nt3GAKHunoNc5MVsq3EOCz0DZSQ==
 
 magic-string@^0.30.11, magic-string@^0.30.15, magic-string@^0.30.5:
   version "0.30.15"

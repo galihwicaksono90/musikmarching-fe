@@ -2,6 +2,7 @@
 	import type { LayoutData } from "./$types";
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
 	import { Avatar, AvatarFallback, Button } from "$lib/components/ui";
+	import Music from "lucide-svelte/icons/music";
 	import type { User } from "$lib/model";
 	import type { Snippet } from "svelte";
 	let { children, data }: { data: LayoutData; children: Snippet } = $props();
@@ -54,15 +55,19 @@
 	</a>
 {/snippet}
 
-<div class="w-full bg-blue-900">
+<div class="w-full shadow">
 	<nav class="flex justify-between h-16 container mx-auto items-center">
-		<a href="/">
-			<h1 class="text-lg font-semibold md:text-2xl text-white">
+		<a href="/" class="flex flex-row gap-2 items-center">
+			<Music />
+			<h1 class="text-lg font-extrabold md:text-2xl uppercase">
 				Musik Marching
 			</h1>
 		</a>
 		{#if data.user}
-			{@render loggedIn(data.user)}
+			<div class="flex flex-row items-center gap-4">
+				<div>{data.user.name}</div>
+				{@render loggedIn(data.user)}
+			</div>
 		{:else}
 			{@render loggedOut()}
 		{/if}
@@ -72,3 +77,9 @@
 <main class="container mx-auto py-8">
 	{@render children()}
 </main>
+
+<footer class="bg-gray-100">
+	<div class="container mx-auto py-4 flex justify-center">
+		Copyright © 2025 MusikMarching
+	</div>
+</footer>

@@ -3,6 +3,7 @@
 @tailwind utilities;
  
 @layer base {
+
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -54,6 +55,12 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  @font-face {
+    font-family: 'Jost';
+		src: local('Jost'), local('jost'),
+			url('/fonts/Jost/Jost-Regular.ttf');
+		font-display: swap;
   }
 }
 

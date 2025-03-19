@@ -1,6 +1,9 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import * as Pagination from "$lib/components/ui/pagination";
+  import ChevronsLeft from "lucide-svelte/icons/chevrons-left";
+  import ChevronsRight from "lucide-svelte/icons/chevrons-right";
+
   let {
     page = 1,
     count,
@@ -30,7 +33,9 @@
   >
     <Pagination.Content>
       <Pagination.Item>
-        <Pagination.PrevButton disabled={currentPage === 1} />
+        <Pagination.PrevButton disabled={currentPage === 1}
+          ><ChevronsLeft /></Pagination.PrevButton
+        >
       </Pagination.Item>
       {#each pages as page (page.key)}
         {#if page.type === "ellipsis"}
@@ -46,7 +51,9 @@
         {/if}
       {/each}
       <Pagination.Item>
-        <Pagination.NextButton disabled={currentPage === pages.length} />
+        <Pagination.NextButton disabled={currentPage === pages.length}>
+          <ChevronsRight />
+        </Pagination.NextButton>
       </Pagination.Item>
     </Pagination.Content>
   </Pagination.Root>

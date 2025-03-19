@@ -3,11 +3,11 @@
 	import type { LayoutData } from "./$types";
 	import "../app.css";
 	import type { Snippet } from "svelte";
-	import { ModeWatcher } from "mode-watcher";
+	// import { ModeWatcher } from "mode-watcher";
 
 	let { children }: { data: LayoutData; children: Snippet } = $props();
 </script>
 
-<ModeWatcher />
-	{@render children()}
-<Toaster />
+<!-- <ModeWatcher /> -->
+{@render children()}
+<!-- <Toaster /> -->

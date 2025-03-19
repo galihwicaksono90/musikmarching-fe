@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { enhance } from "$app/forms";
   import { AudioPlayer, ScoreImageCarousel } from "$lib/components/common";
   import {
     type PublicScore,
@@ -10,7 +11,13 @@
 
   let { data }: { data: PageData } = $props();
 
-  const { user, score } = data;
+  const { user } = data;
+
+  const onSubmit = async (e: SubmitEvent) => {
+    e.preventDefault();
+
+    console.log("submit");
+  };
 </script>
 
 {#snippet badges(names: string[])}
@@ -59,8 +66,8 @@
   </div>
 
   {#if !!user}
-    <form method="POST">
-      <Button type="submit">Purchase!</Button>
+    <form method="POST" onsubmit={onSubmit} use:enhance>
+      <Button type="submit">Beli</Button>
     </form>
   {/if}
 </section>
