@@ -4,11 +4,37 @@
   import { Button } from "$lib/components/ui";
   import { AudioPlayer } from "$lib/components/common";
   import type { PurchasedScore, Purchase } from "$lib/model";
-  import { getPurchaseStatusLabel, getPurchaseInvoiceNumber } from "$lib/util";
+  import {
+    getPurchaseStatusLabel,
+    getPurchaseInvoiceNumber,
+    toast,
+  } from "$lib/util";
   import * as Dialog from "$lib/components/ui/dialog";
+  import { getFlash } from "sveltekit-flash-message/client";
+  import { page } from "$app/stores";
+
+  const flash = getFlash(page);
+
+  $effect(() => {
+    console.log({ flash: $flash });
+    if (!$flash) return;
+
+    toast({
+      type: $flash.type,
+      message: $flash?.message,
+    });
+
+    // $flash = undefined;
+  });
 
   let { data }: { data: PageData } = $props();
 
+  const onclick = () => {
+    toast({
+      type: "success",
+      message: "hello world",
+    });
+  };
 </script>
 
 {#snippet purchaseProofModal(url: string)}
@@ -39,7 +65,8 @@
       scrolling="auto"
       height="600px"
       width="100%"
-    ></iframe> </div>
+    ></iframe>
+  </div>
   <div>
     <h4 class="text-md font-bold">Audio</h4>
     <AudioPlayer src={score.audio_url} />
@@ -84,7 +111,7 @@
   {#if !data.purchase.is_verified}
     {@render purcaseInvoice(data.purchase)}
     <div class="flex gap-8 max-w-xl">
-      <UploadPurchaseProofForm data={data.form} />
+      <UploadPurchaseProofForm data={data.form} score={data}/>
     </div>
   {:else}
     <Dialog.Root>

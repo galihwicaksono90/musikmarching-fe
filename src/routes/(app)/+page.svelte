@@ -41,6 +41,7 @@
 					<PublicScoreCard {score} />
 				{/each}
 			</div>
+			<MainPagination count={data.count} limit={data.limit} page={data.page} />
 		</div>
 	{/if}
 </div>

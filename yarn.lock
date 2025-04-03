@@ -2451,6 +2451,11 @@ svelte@^5.0.0:
     magic-string "^0.30.11"
     zimmerframe "^1.1.2"
 
+sveltekit-flash-message@^2.4.6:
+  version "2.4.6"
+  resolved "https://registry.yarnpkg.com/sveltekit-flash-message/-/sveltekit-flash-message-2.4.6.tgz#c977fab681b07527b15a9d9945cf0ff323b43157"
+  integrity sha512-++FGMWiKbQyJn133xwyTAKzoW7NPtsa3BrYq33IlR7Efh2J0XvLXg6rZkAROM8eKBG9s2MoxDANFfxa6pOxS6A==
+
 sveltekit-superforms@^2.21.1:
   version "2.21.1"
   resolved "https://registry.yarnpkg.com/sveltekit-superforms/-/sveltekit-superforms-2.21.1.tgz#dc85e3f73ab443ab6a7c4e8aae50b239e0c84e1d"

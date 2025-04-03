@@ -55,7 +55,7 @@
 	</a>
 {/snippet}
 
-<div class="w-full shadow">
+<header class="w-full shadow">
 	<nav class="flex justify-between h-16 container mx-auto items-center">
 		<a href="/" class="flex flex-row gap-2 items-center">
 			<Music />
@@ -72,13 +72,13 @@
 			{@render loggedOut()}
 		{/if}
 	</nav>
-</div>
+</header>
 
 <main class="container mx-auto py-8">
 	{@render children()}
 </main>
 
-<footer class="bg-gray-100">
+<footer class="bg-gray-100 mt-auto">
 	<div class="container mx-auto py-4 flex justify-center">
 		Copyright © 2025 MusikMarching
 	</div>

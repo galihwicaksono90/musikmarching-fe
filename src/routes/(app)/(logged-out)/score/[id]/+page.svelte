@@ -1,73 +1,87 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
+  import ArrowLeft from "lucide-svelte/icons/arrow-left";
+  import { Separator } from "$lib/components/ui";
   import { AudioPlayer, ScoreImageCarousel } from "$lib/components/common";
-  import {
-    type PublicScore,
-    contentTypeLabels,
-    difficultyLabels,
-  } from "$lib/model";
-  import { Badge, Button } from "$lib/components/ui";
+  import { difficultyLabels } from "$lib/model";
+  import { Badge } from "$lib/components/ui";
   import type { PageData } from "./$types";
+  import { PurchaseScoreForm } from "$lib/components/form";
 
   let { data }: { data: PageData } = $props();
 
   const { user } = data;
-
-  const onSubmit = async (e: SubmitEvent) => {
-    e.preventDefault();
-
-    console.log("submit");
-  };
 </script>
 
-{#snippet badges(names: string[])}
-  <!-- <div class="truncate"> -->
-  <!--   : {renderTags(names)} -->
-  <!-- </div> -->
-  <div class="flex gap-1 flex-wrap">
-    {#each names as name}
-      <Badge>{name}</Badge>
-    {/each}
-  </div>
-{/snippet}
-
-{#snippet items(score: PublicScore)}
-  <div class="grid grid-cols-[80px,_1fr] gap-4 justify-center text-sm">
-    <div>Penulis</div>
-    <div>: {score.full_name}</div>
-    <div>Kesulitan</div>
-    <div>: {difficultyLabels[score.difficulty]}</div>
-    <div>Jenis konten</div>
-    <div>: {contentTypeLabels[score.content_type]}</div>
-    <div>Kategori</div>
-    {@render badges(score.categories)}
-    <div>Instrumen</div>
-    {@render badges(score.instruments)}
-    <div>Peruntukan</div>
-    {@render badges(score.allocations)}
-  </div>
-{/snippet}
-
-<section class="flex flex-col gap-8">
-  <h1 class="text-5xl font-bold">Score {data.score.title}</h1>
-  <div class="flex gap-8">
-    <div class="flex flex-col gap-8 flex-1">
-      <p>{data.score.description}</p>
-      {@render items(data.score)}
-    </div>
-    <div class="w-[400px] flex flex-col gap-8">
-      <div class="flex justify-center">
-        <ScoreImageCarousel images={data.score.pdf_image_urls} />
-      </div>
-      {#if !!data.score.audio_url}
-        <AudioPlayer src={data.score.audio_url} />
+{#snippet scoreProperty(title: string, content: string | string[])}
+  <div>
+    <p class="font-medium">{title}</p>
+    <p class="text-muted-foreground">
+      {#if Array.isArray(content)}
+        {content.join(", ")}
+      {:else}
+        {content}
       {/if}
+    </p>
+  </div>
+{/snippet}
+
+<main class="flex-1">
+  <div class="container px-4 py-6 md:px-6 md:py-12">
+    <a
+      href="/"
+      class="mb-6 flex items-center text-sm font-medium text-muted-foreground hover:text-foreground"
+    >
+      <ArrowLeft class="mr-2 h-4 w-4" />
+      Kembali ke katalog
+    </a>
+    <div class="grid gap-6 lg:grid-cols-2 lg:gap-12">
+      <div class="flex flex-col gap-4">
+        <div class="relative overflow-hidden rounded-lg border">
+          <div>
+            <ScoreImageCarousel
+              images={data.score.pdf_image_urls}
+              className="w-full h-full max-w-full"
+            />
+          </div>
+          {#if data.score.content_type === "exclusive"}
+            <Badge class="absolute left-2 top-2">Exclusive</Badge>
+          {/if}
+        </div>
+      </div>
+      <div class="flex flex-col gap-4">
+        <div>
+          <h1 class="text-3xl font-bold">{data.score.title}</h1>
+          <p class="text-lg text-muted-foreground">{data.score.full_name}</p>
+        </div>
+        <div class="text-3xl font-bold">
+          {data.score.price.toLocaleString("id-ID", {
+            style: "currency",
+            currency: "IDR",
+          })}
+        </div>
+        <AudioPlayer src={data.score.audio_url} />
+        <Separator />
+        <div class="flex flex-col gap-1">
+          <h2 class="text-2xl font-bold">Deskripsi</h2>
+          <p class="text-muted-foreground">
+            {data.score.description}
+          </p>
+        </div>
+        <Separator />
+        <div class="grid grid-cols-2 gap-4 text-sm">
+          {@render scoreProperty(
+            "Tinkat Kesulitan",
+            difficultyLabels[data.score.difficulty],
+          )}
+          {@render scoreProperty("Instrumen", data.score.instruments)}
+          {@render scoreProperty("Peruntukan", data.score.allocations)}
+          {@render scoreProperty("Kategori", data.score.categories)}
+        </div>
+        {#if !!user}
+          <Separator />
+          <PurchaseScoreForm data={data.form} score={data.score}/>
+        {/if}
+      </div>
     </div>
   </div>
-
-  {#if !!user}
-    <form method="POST" onsubmit={onSubmit} use:enhance>
-      <Button type="submit">Beli</Button>
-    </form>
-  {/if}
-</section>
+</main>

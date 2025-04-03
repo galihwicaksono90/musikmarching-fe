@@ -10,4 +10,4 @@
 
 <!-- <ModeWatcher /> -->
 {@render children()}
-<!-- <Toaster /> -->
+<Toaster />

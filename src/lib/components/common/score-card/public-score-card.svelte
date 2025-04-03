@@ -2,7 +2,7 @@
   import * as Card from "$lib/components/ui/card";
   import { type PublicScore } from "$lib/model";
   import { Badge, Button } from "$lib/components/ui";
-  import AudioPlayer from "../audio-player/audio-player.svelte";
+  import AudioPlayerButton from "../audio-player-button/audio-player-button.svelte";
   import FileMusic from "lucide-svelte/icons/file-music";
 
   let { score }: { score: PublicScore } = $props();
@@ -43,7 +43,7 @@
   </Card.Content>
   <Card.Footer class="flex flex-row gap-2">
     <div>
-      <AudioPlayer src={score.audio_url} />
+      <AudioPlayerButton src={score.audio_url} />
     </div>
     <div class="flex-1">
       <a href={`/score/${score.id}`}>
