@@ -1,8 +1,25 @@
 <script lang="ts">
   import { Input } from "$lib/components/ui";
-  import * as Form from "$lib/components/ui/form";
-  import * as Select from "$lib/components/ui/select";
-  import * as Accordion from "$lib/components/ui/accordion";
+  import {
+    FormLegend,
+    FormControl,
+    FormField,
+    FormLabel,
+    FormFieldErrors,
+    FormFieldset,
+  } from "$lib/components/ui/form";
+  import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+  } from "$lib/components/ui/select";
+  import {
+    Accordion,
+    AccordionItem,
+    AccordionContent,
+    AccordionTrigger,
+  } from "$lib/components/ui/accordion";
   import { Button, Checkbox } from "$lib/components/ui";
   import CircleX from "lucide-svelte/icons/circle-x";
   import type { Props } from "./main-search-form.model";
@@ -19,14 +36,9 @@
   let { data, instrumentOptions, categoryOptions, allocationOptions }: Props =
     $props();
 
-  const form = superForm(data, {
-    resetForm: false,
-    onUpdated: (form) => {
-      console.log({ form });
-    },
-  });
+  const form = superForm(data, { resetForm: false });
 
-  const { form: formData, enhance } = form;
+  const { form: formData, enhance, errors } = form;
 
   function addItem(id: string, name: "instrument" | "category" | "allocation") {
     $formData[name] = [...$formData[name], id];
@@ -39,26 +51,16 @@
     $formData[name] = $formData[name].filter((i) => i !== id);
   }
 
-  let difficultyValue = $derived(
-    $formData.difficulty
-      ? {
-          value: $formData.difficulty,
-          label: difficultyLabels[$formData.difficulty as Difficulty],
-        }
-      : null,
-  );
-
-  let contentTypeValue = $derived(
-    $formData.contentType
-      ? {
-          value: $formData.contentType,
-          label: contentTypeLabels[$formData.contentType as ContentType],
-        }
-      : null,
-  );
+  const triggerContent = $derived({
+    difficulty:
+      difficultyLabels[$formData.difficulty as Difficulty] ??
+      "Tingkat Kesulitan",
+    contentType:
+      contentTypeLabels[$formData.contentType as ContentType] ?? "Jenis Konten",
+  });
 </script>
 
-<Accordion.Root multiple>
+<Accordion type="multiple">
   <form
     class="flex flex-col gap-4"
     method="POST"
@@ -66,16 +68,16 @@
     id="main-search-form"
   >
     <div class="flex items-center gap-2 flex-1">
-      <Form.Field {form} name="title" class="flex-1">
-        <Form.Control>
+      <FormField {form} name="title" class="flex-1">
+        <FormControl>
           <Input
             placeholder="Cari judul"
             bind:value={$formData.title}
             name="title"
             type="text"
           />
-        </Form.Control>
-      </Form.Field>
+        </FormControl>
+      </FormField>
     </div>
 
     <div class="flex flex-col gap-2">
@@ -84,191 +86,194 @@
         <Button type="button" variant="outline" class="w-full">Reset</Button>
       </a>
     </div>
-    <Form.Fieldset {form} name="category" class="space-y-0">
-      <Accordion.Item value="category">
-        <Accordion.Trigger>
-          <Form.Legend class="text-base">Kategori</Form.Legend>
-        </Accordion.Trigger>
-        <Accordion.Content>
+    <FormFieldset {form} name="category" class="space-y-0">
+      <AccordionItem value="category">
+        <AccordionTrigger>
+          <FormLegend class="text-base">Kategori</FormLegend>
+        </AccordionTrigger>
+        <AccordionContent>
           <div class="space-y-2">
             {#each categoryOptions as item}
               {@const checked = $formData.category.includes(item.name)}
               <div class="flex flex-row items-center space-x-3">
-                <Form.Control let:attrs>
-                  <Checkbox
-                    {...attrs}
-                    {checked}
-                    onCheckedChange={(v) => {
-                      if (v) {
-                        addItem(item.name, "category");
-                      } else {
-                        removeItem(item.name, "category");
-                      }
-                    }}
-                  />
-                  <Form.Label class="font-normal">
-                    {item.name}
-                  </Form.Label>
-                  <input
-                    hidden
-                    type="checkbox"
-                    name={attrs.name}
-                    value={item.name}
-                    {checked}
-                  />
-                </Form.Control>
+                <FormControl>
+                  {#snippet children({ props })}
+                    <Checkbox
+                      {checked}
+                      onCheckedChange={(v) => {
+                        if (v) {
+                          addItem(item.name, "category");
+                        } else {
+                          removeItem(item.name, "category");
+                        }
+                      }}
+                    />
+                    <FormLabel class="font-normal">
+                      {item.name}
+                    </FormLabel>
+                    <input
+                      hidden
+                      type="checkbox"
+                      name={props.name}
+                      value={item.name}
+                      {checked}
+                    />
+                  {/snippet}
+                </FormControl>
               </div>
             {/each}
-            <Form.FieldErrors />
+            <FormFieldErrors />
           </div>
-        </Accordion.Content>
-      </Accordion.Item>
-    </Form.Fieldset>
+        </AccordionContent>
+      </AccordionItem>
+    </FormFieldset>
 
-    <Form.Fieldset {form} name="instrument" class="space-y-0">
-      <Accordion.Item value="intrument">
-        <Accordion.Trigger>
-          <Form.Legend class="text-base">Instrumen</Form.Legend>
-        </Accordion.Trigger>
-        <Accordion.Content>
+    <FormFieldset {form} name="instrument" class="space-y-0">
+      <AccordionItem value="intrument">
+        <AccordionTrigger>
+          <FormLegend class="text-base">Instrumen</FormLegend>
+        </AccordionTrigger>
+        <AccordionContent>
           <div class="mb-4"></div>
           <div class="space-y-2">
             {#each instrumentOptions as item}
               {@const checked = $formData.instrument.includes(item.name)}
               <div class="flex flex-row items-start space-x-3">
-                <Form.Control let:attrs>
-                  <Checkbox
-                    {...attrs}
-                    {checked}
-                    onCheckedChange={(v) => {
-                      if (v) {
-                        addItem(item.name, "instrument");
-                      } else {
-                        removeItem(item.name, "instrument");
-                      }
-                    }}
-                  />
-                  <Form.Label class="font-normal">
-                    {item.name}
-                  </Form.Label>
-                  <input
-                    hidden
-                    type="checkbox"
-                    name={attrs.name}
-                    value={item.name}
-                    {checked}
-                  />
-                </Form.Control>
+                <FormControl>
+                  {#snippet children({ props })}
+                    <Checkbox
+                      {...props}
+                      {checked}
+                      onCheckedChange={(v) => {
+                        if (v) {
+                          addItem(item.name, "instrument");
+                        } else {
+                          removeItem(item.name, "instrument");
+                        }
+                      }}
+                    />
+                    <FormLabel class="font-normal">
+                      {item.name}
+                    </FormLabel>
+                    <input
+                      hidden
+                      type="checkbox"
+                      {...props}
+                      value={item.name}
+                      {checked}
+                    />
+                  {/snippet}
+                </FormControl>
               </div>
             {/each}
-            <Form.FieldErrors />
+            <FormFieldErrors />
           </div>
-        </Accordion.Content>
-      </Accordion.Item>
-    </Form.Fieldset>
+        </AccordionContent>
+      </AccordionItem>
+    </FormFieldset>
 
-    <Form.Fieldset {form} name="allocation" class="space-y-0">
-      <Accordion.Item value="allocation">
-        <Accordion.Trigger>
-          <Form.Legend class="text-base">Peruntukan</Form.Legend>
-        </Accordion.Trigger>
-        <Accordion.Content>
+    <FormFieldset {form} name="allocation" class="space-y-0">
+      <AccordionItem value="allocation">
+        <AccordionTrigger>
+          <FormLegend class="text-base">Peruntukan</FormLegend>
+        </AccordionTrigger>
+        <AccordionContent>
           <div class="space-y-2">
             {#each allocationOptions as item}
               {@const checked = $formData.allocation.includes(item.name)}
               <div class="flex flex-row items-start space-x-3">
-                <Form.Control let:attrs>
-                  <Checkbox
-                    {...attrs}
-                    {checked}
-                    onCheckedChange={(v) => {
-                      if (v) {
-                        addItem(item.name, "allocation");
-                      } else {
-                        removeItem(item.name, "allocation");
-                      }
-                    }}
-                  />
-                  <Form.Label class="font-normal">
-                    {item.name}
-                  </Form.Label>
-                  <input
-                    hidden
-                    type="checkbox"
-                    name={attrs.name}
-                    value={item.name}
-                    {checked}
-                  />
-                </Form.Control>
+                <FormControl>
+                  {#snippet children({ props })}
+                    <Checkbox
+                      {...props}
+                      {checked}
+                      onCheckedChange={(v) => {
+                        if (v) {
+                          addItem(item.name, "allocation");
+                        } else {
+                          removeItem(item.name, "allocation");
+                        }
+                      }}
+                    />
+                    <FormLabel class="font-normal">
+                      {item.name}
+                    </FormLabel>
+                    <input
+                      hidden
+                      type="checkbox"
+                      {...props}
+                      value={item.name}
+                      {checked}
+                    />
+                  {/snippet}
+                </FormControl>
               </div>
             {/each}
-            <Form.FieldErrors />
+            <FormFieldErrors />
           </div>
-        </Accordion.Content>
-      </Accordion.Item>
-    </Form.Fieldset>
+        </AccordionContent>
+      </AccordionItem>
+    </FormFieldset>
 
-    <Form.Field {form} name="difficulty">
-      <Form.Control let:attrs>
-        <Form.Label>Tingkat Kesulitan</Form.Label>
+    <FormField {form} name="difficulty">
+      <FormControl>
+        {#snippet children({ props })}
+          <FormLabel>Tingkat Kesulitan</FormLabel>
 
-        <Select.Root
-          selected={difficultyValue as any}
-          onSelectedChange={(v) => {
-            if (v) {
-              $formData.difficulty = v.value as string;
-            }
-          }}
-        >
-          <div class="flex items-center gap-2">
-            <Select.Trigger {...attrs}>
-              <Select.Value placeholder="Tingkat Kesulitan" />
-            </Select.Trigger>
-            <button
-              class="rounded-full"
-              onclick={() => ($formData.difficulty = undefined)}
-              type="button"><CircleX class="h-4 w-4" /></button
-            >
-          </div>
-          <Select.Content>
-            {#each difficulties as item}
-              <Select.Item value={item} label={difficultyLabels[item]} />
-            {/each}
-          </Select.Content>
-        </Select.Root>
-        <input hidden bind:value={$formData.difficulty} name={attrs.name} />
-      </Form.Control>
-    </Form.Field>
+          <Select
+            type="single"
+            bind:value={$formData.difficulty}
+            name="difficulty"
+          >
+            <div class="flex items-center gap-2">
+              <SelectTrigger {...props}>
+                {triggerContent.difficulty}
+              </SelectTrigger>
+              <button
+                class="rounded-full"
+                onclick={() => ($formData.difficulty = "")}
+                type="button"><CircleX class="h-4 w-4" /></button
+              >
+            </div>
+            <SelectContent>
+              {#each difficulties as item}
+                <SelectItem value={item} label={difficultyLabels[item]} />
+              {/each}
+            </SelectContent>
+          </Select>
+          <input hidden bind:value={$formData.difficulty} {...props} />
+        {/snippet}
+      </FormControl>
+    </FormField>
 
-    <Form.Field {form} name="contentType">
-      <Form.Control let:attrs>
-        <Form.Label>Jenis Konten</Form.Label>
-        <Select.Root
-          selected={contentTypeValue as any}
-          onSelectedChange={(v) => {
-            if (v) {
-              $formData.contentType = v.value as string;
-            }
-          }}
-        >
-          <div class="flex items-center gap-2">
-            <Select.Trigger {...attrs}>
-              <Select.Value placeholder="Jenis konten" />
-            </Select.Trigger>
-            <button
-              class="rounded-full"
-              onclick={() => ($formData.contentType = undefined)}
-              type="button"><CircleX class="h-4 w-4" /></button
-            >
-          </div>
-          <Select.Content>
-            {#each contentType as item}
-              <Select.Item value={item} label={contentTypeLabels[item]} />
-            {/each}
-          </Select.Content>
-        </Select.Root>
-        <input hidden bind:value={$formData.contentType} name={attrs.name} />
-      </Form.Control>
-    </Form.Field>
+    <FormField {form} name="contentType">
+      <FormControl>
+        {#snippet children({ props })}
+          <FormLabel>Jenis Konten</FormLabel>
+          <Select
+            type="single"
+            bind:value={$formData.contentType}
+            name="contentType"
+          >
+            <div class="flex items-center gap-2">
+              <SelectTrigger {...props}>
+                {triggerContent.contentType}
+              </SelectTrigger>
+              <button
+                class="rounded-full"
+                onclick={() => ($formData.contentType = "")}
+                type="button"><CircleX class="h-4 w-4" /></button
+              >
+            </div>
+            <SelectContent>
+              {#each contentType as item}
+                <SelectItem value={item} label={contentTypeLabels[item]} />
+              {/each}
+            </SelectContent>
+          </Select>
+          <input hidden bind:value={$formData.contentType} {...props} />
+        {/snippet}
+      </FormControl>
+    </FormField>
   </form>
-</Accordion.Root>
+</Accordion>

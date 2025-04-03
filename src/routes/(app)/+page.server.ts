@@ -57,8 +57,8 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
     instrument: instrumentsParams,
     category: categoriesParams,
     allocation: allocationsParams,
-    difficulty: url.searchParams.get('difficulty') ?? null,
-    contentType: url.searchParams.get('content_type') ?? null,
+    difficulty: url.searchParams.get('difficulty') ?? undefined,
+    contentType: url.searchParams.get('content_type') ?? undefined,
   }, zod(mainSearchFormSchema));
 
 

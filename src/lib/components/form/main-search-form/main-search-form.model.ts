@@ -7,8 +7,8 @@ export const mainSearchFormSchema = z.object({
   instrument: z.string().array(),
   category: z.string().array(),
   allocation: z.string().array(),
-  difficulty: z.string().nullish(),
-  contentType: z.string().nullish(),
+  difficulty: z.string().optional(),
+  contentType: z.string().optional(),
 })
 
 export type Props = {

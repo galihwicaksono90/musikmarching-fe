@@ -32,16 +32,13 @@
 			class="bg-muted/40 flex h-14 items-center gap-4 border-b px-4 lg:h-[60px] lg:px-6"
 		>
 			<Sheet.Root>
-				<Sheet.Trigger asChild let:builder>
-					<Button
-						variant="outline"
-						size="icon"
-						class="shrink-0 md:hidden"
-						builders={[builder]}
-					>
-						<Menu class="h-5 w-5" />
-						<span class="sr-only">Toggle navigation menu</span>
-					</Button>
+				<Sheet.Trigger>
+					{#snippet children()}
+						<Button variant="outline" size="icon" class="shrink-0 md:hidden">
+							<Menu class="h-5 w-5" />
+							<span class="sr-only">Toggle navigation menu</span>
+						</Button>
+					{/snippet}
 				</Sheet.Trigger>
 				<Sheet.Content side="left" class="flex flex-col">
 					<nav class="grid gap-2 text-lg font-medium">
@@ -53,16 +50,17 @@
 				<span class="">Musikmarching Admin</span>
 			</a>
 			<DropdownMenu.Root>
-				<DropdownMenu.Trigger asChild let:builder>
-					<Button
-						builders={[builder]}
-						variant="secondary"
-						size="icon"
-						class="rounded-full ml-auto"
-					>
-						<CircleUser class="h-5 w-5" />
-						<span class="sr-only">Toggle user menu</span>
-					</Button>
+				<DropdownMenu.Trigger>
+					{#snippet children()}
+						<Button
+							variant="secondary"
+							size="icon"
+							class="rounded-full ml-auto"
+						>
+							<CircleUser class="h-5 w-5" />
+							<span class="sr-only">Toggle user menu</span>
+						</Button>
+					{/snippet}
 				</DropdownMenu.Trigger>
 				<DropdownMenu.Content align="end">
 					<DropdownMenu.Label>My Account</DropdownMenu.Label>

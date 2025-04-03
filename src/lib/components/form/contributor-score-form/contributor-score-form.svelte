@@ -152,51 +152,55 @@
       </Form.Field>
 
       <Form.Field {form} name="difficulty">
-        <Form.Control let:attrs>
-          <Form.Label required>Tingkat Kesulitan</Form.Label>
-          <Select.Root
-            selected={difficultyValue as any}
-            onSelectedChange={(v) => {
-              v && ($formData.difficulty = v.value as Difficulty);
-            }}
-          >
-            <div class="flex items-center gap-2">
-              <Select.Trigger {...attrs}>
-                <Select.Value placeholder="Tingkat Kesulitan" />
-              </Select.Trigger>
-            </div>
-            <Select.Content>
-              {#each difficulties as item}
-                <Select.Item value={item} label={difficultyLabels[item]} />
-              {/each}
-            </Select.Content>
-          </Select.Root>
-          <input hidden bind:value={$formData.difficulty} name={attrs.name} />
-        </Form.Control>
+        <Form.Control >
+          {#snippet children({ attrs })}
+                    <Form.Label required>Tingkat Kesulitan</Form.Label>
+            <Select.Root
+              selected={difficultyValue as any}
+              onSelectedChange={(v) => {
+                v && ($formData.difficulty = v.value as Difficulty);
+              }}
+            >
+              <div class="flex items-center gap-2">
+                <Select.Trigger {...attrs}>
+                  <Select.Value placeholder="Tingkat Kesulitan" />
+                </Select.Trigger>
+              </div>
+              <Select.Content>
+                {#each difficulties as item}
+                  <Select.Item value={item} label={difficultyLabels[item]} />
+                {/each}
+              </Select.Content>
+            </Select.Root>
+            <input hidden bind:value={$formData.difficulty} name={attrs.name} />
+                            {/snippet}
+                </Form.Control>
       </Form.Field>
 
       <Form.Field {form} name="contentType">
-        <Form.Control let:attrs>
-          <Form.Label required>Jenis Konten</Form.Label>
-          <Select.Root
-            selected={contentTypeValue as any}
-            onSelectedChange={(v) => {
-              v && ($formData.contentType = v.value as ContentType);
-            }}
-          >
-            <div class="flex items-center gap-2">
-              <Select.Trigger {...attrs}>
-                <Select.Value placeholder="Jenis konten" />
-              </Select.Trigger>
-            </div>
-            <Select.Content>
-              {#each contentType as item}
-                <Select.Item value={item} label={contentTypeLabels[item]} />
-              {/each}
-            </Select.Content>
-          </Select.Root>
-          <input hidden bind:value={$formData.contentType} name={attrs.name} />
-        </Form.Control>
+        <Form.Control >
+          {#snippet children({ attrs })}
+                    <Form.Label required>Jenis Konten</Form.Label>
+            <Select.Root
+              selected={contentTypeValue as any}
+              onSelectedChange={(v) => {
+                v && ($formData.contentType = v.value as ContentType);
+              }}
+            >
+              <div class="flex items-center gap-2">
+                <Select.Trigger {...attrs}>
+                  <Select.Value placeholder="Jenis konten" />
+                </Select.Trigger>
+              </div>
+              <Select.Content>
+                {#each contentType as item}
+                  <Select.Item value={item} label={contentTypeLabels[item]} />
+                {/each}
+              </Select.Content>
+            </Select.Root>
+            <input hidden bind:value={$formData.contentType} name={attrs.name} />
+                            {/snippet}
+                </Form.Control>
       </Form.Field>
     </div>
 
@@ -246,29 +250,31 @@
             {#each instrumentOptions as item}
               {@const checked = $formData.instruments.includes(item.id)}
               <div class="flex flex-row items-start space-x-3">
-                <Form.Control let:attrs>
-                  <Checkbox
-                    {...attrs}
-                    {checked}
-                    onCheckedChange={(v: any) => {
-                      if (v) {
-                        addItem(item.id, "instruments");
-                      } else {
-                        removeItem(item.id, "instruments");
-                      }
-                    }}
-                  />
-                  <Form.Label class="font-normal">
-                    {item.name}
-                  </Form.Label>
-                  <input
-                    hidden
-                    type="checkbox"
-                    name={attrs.name}
-                    value={item.id}
-                    {checked}
-                  />
-                </Form.Control>
+                <Form.Control >
+                  {#snippet children({ attrs })}
+                                    <Checkbox
+                      {...attrs}
+                      {checked}
+                      onCheckedChange={(v: any) => {
+                        if (v) {
+                          addItem(item.id, "instruments");
+                        } else {
+                          removeItem(item.id, "instruments");
+                        }
+                      }}
+                    />
+                    <Form.Label class="font-normal">
+                      {item.name}
+                    </Form.Label>
+                    <input
+                      hidden
+                      type="checkbox"
+                      name={attrs.name}
+                      value={item.id}
+                      {checked}
+                    />
+                                                    {/snippet}
+                                </Form.Control>
               </div>
             {/each}
             <Form.FieldErrors />
@@ -283,29 +289,31 @@
             {#each categoryOptions as item}
               {@const checked = $formData.categories.includes(item.id)}
               <div class="flex flex-row items-start space-x-3">
-                <Form.Control let:attrs>
-                  <Checkbox
-                    {...attrs}
-                    {checked}
-                    onCheckedChange={(v: any) => {
-                      if (v) {
-                        addItem(item.id, "categories");
-                      } else {
-                        removeItem(item.id, "categories");
-                      }
-                    }}
-                  />
-                  <Form.Label class="font-normal">
-                    {item.name}
-                  </Form.Label>
-                  <input
-                    hidden
-                    type="checkbox"
-                    name={attrs.name}
-                    value={item.id}
-                    {checked}
-                  />
-                </Form.Control>
+                <Form.Control >
+                  {#snippet children({ attrs })}
+                                    <Checkbox
+                      {...attrs}
+                      {checked}
+                      onCheckedChange={(v: any) => {
+                        if (v) {
+                          addItem(item.id, "categories");
+                        } else {
+                          removeItem(item.id, "categories");
+                        }
+                      }}
+                    />
+                    <Form.Label class="font-normal">
+                      {item.name}
+                    </Form.Label>
+                    <input
+                      hidden
+                      type="checkbox"
+                      name={attrs.name}
+                      value={item.id}
+                      {checked}
+                    />
+                                                    {/snippet}
+                                </Form.Control>
               </div>
             {/each}
             <Form.FieldErrors />
@@ -320,29 +328,31 @@
             {#each allocationOptions as item}
               {@const checked = $formData.allocations.includes(item.id)}
               <div class="flex flex-row items-start space-x-3">
-                <Form.Control let:attrs>
-                  <Checkbox
-                    {...attrs}
-                    {checked}
-                    onCheckedChange={(v: any) => {
-                      if (v) {
-                        addItem(item.id, "allocations");
-                      } else {
-                        removeItem(item.id, "allocations");
-                      }
-                    }}
-                  />
-                  <Form.Label class="font-normal">
-                    {item.name}
-                  </Form.Label>
-                  <input
-                    hidden
-                    type="checkbox"
-                    name={attrs.name}
-                    value={item.id}
-                    {checked}
-                  />
-                </Form.Control>
+                <Form.Control >
+                  {#snippet children({ attrs })}
+                                    <Checkbox
+                      {...attrs}
+                      {checked}
+                      onCheckedChange={(v: any) => {
+                        if (v) {
+                          addItem(item.id, "allocations");
+                        } else {
+                          removeItem(item.id, "allocations");
+                        }
+                      }}
+                    />
+                    <Form.Label class="font-normal">
+                      {item.name}
+                    </Form.Label>
+                    <input
+                      hidden
+                      type="checkbox"
+                      name={attrs.name}
+                      value={item.id}
+                      {checked}
+                    />
+                                                    {/snippet}
+                                </Form.Control>
               </div>
             {/each}
             <Form.FieldErrors />

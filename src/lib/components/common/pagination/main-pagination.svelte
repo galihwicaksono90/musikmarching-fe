@@ -27,34 +27,36 @@
   <Pagination.Root
     {count}
     perPage={limit}
-    let:pages
-    let:currentPage
+    
+    
     bind:page={() => page, setPage}
   >
-    <Pagination.Content>
-      <Pagination.Item>
-        <Pagination.PrevButton disabled={currentPage === 1}
-          ><ChevronsLeft /></Pagination.PrevButton
-        >
-      </Pagination.Item>
-      {#each pages as page (page.key)}
-        {#if page.type === "ellipsis"}
-          <Pagination.Item>
-            <Pagination.Ellipsis />
-          </Pagination.Item>
-        {:else}
-          <Pagination.Item>
-            <Pagination.Link {page} isActive={currentPage == page.value}>
-              {page.value}
-            </Pagination.Link>
-          </Pagination.Item>
-        {/if}
-      {/each}
-      <Pagination.Item>
-        <Pagination.NextButton disabled={currentPage === pages.length}>
-          <ChevronsRight />
-        </Pagination.NextButton>
-      </Pagination.Item>
-    </Pagination.Content>
-  </Pagination.Root>
+    {#snippet children({ pages, currentPage })}
+        <Pagination.Content>
+        <Pagination.Item>
+          <Pagination.PrevButton disabled={currentPage === 1}
+            ><ChevronsLeft /></Pagination.PrevButton
+          >
+        </Pagination.Item>
+        {#each pages as page (page.key)}
+          {#if page.type === "ellipsis"}
+            <Pagination.Item>
+              <Pagination.Ellipsis />
+            </Pagination.Item>
+          {:else}
+            <Pagination.Item>
+              <Pagination.Link {page} isActive={currentPage == page.value}>
+                {page.value}
+              </Pagination.Link>
+            </Pagination.Item>
+          {/if}
+        {/each}
+        <Pagination.Item>
+          <Pagination.NextButton disabled={currentPage === pages.length}>
+            <ChevronsRight />
+          </Pagination.NextButton>
+        </Pagination.Item>
+      </Pagination.Content>
+          {/snippet}
+    </Pagination.Root>
 </div>

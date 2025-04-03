@@ -14,18 +14,15 @@
 
 {#snippet loggedIn(user: User)}
 	<DropdownMenu.Root>
-		<DropdownMenu.Trigger asChild let:builder>
-			<Button
-				builders={[builder]}
-				variant="secondary"
-				size="icon"
-				class="rounded-full ml-auto"
-			>
-				<Avatar>
-					<AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-				</Avatar>
-				<span class="sr-only">Toggle user menu</span>
-			</Button>
+		<DropdownMenu.Trigger asChild>
+			{#snippet children()}
+				<Button variant="secondary" size="icon" class="rounded-full ml-auto">
+					<Avatar>
+						<AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+					</Avatar>
+					<span class="sr-only">Toggle user menu</span>
+				</Button>
+			{/snippet}
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content align="end">
 			<a href="/profile">
