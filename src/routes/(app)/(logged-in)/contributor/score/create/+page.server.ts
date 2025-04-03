@@ -16,12 +16,12 @@ export const load: PageServerLoad = async ({ parent }) => {
 export const actions: Actions = {
   createScore: async (event) => {
     const form = await superValidate(event, zod(createScoreFormSchema));
+
     if (!form.valid) {
       return fail(400, withFiles({
         form,
       }));
     }
-
 
     const formData = new FormData();
 

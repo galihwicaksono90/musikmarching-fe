@@ -26,6 +26,10 @@ export class ParamsUtil {
 		return (page - 1) * this.limit;
 	}
 
+	public getParam(name: string) {
+		return this.url.searchParams.get(name)
+	}
+
 	public getParams(name: string) {
 		return this.url.searchParams.getAll(name)
 	}

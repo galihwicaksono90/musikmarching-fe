@@ -1,8 +1,21 @@
 <script lang="ts">
   import { Input, Checkbox, Textarea } from "$lib/components/ui";
-  import * as Form from "$lib/components/ui/form";
-  import * as Select from "$lib/components/ui/select";
-  import { Control } from "formsnap";
+  import {
+    FormField,
+    FormLegend,
+    FormDescription,
+    FormLabel,
+    FormControl,
+    FormFieldset,
+    FormFieldErrors,
+    FormButton,
+  } from "$lib/components/ui/form";
+  import {
+    Select,
+    SelectItem,
+    SelectContent,
+    SelectTrigger,
+  } from "$lib/components/ui/select";
   import {
     contentType,
     contentTypeLabels,
@@ -27,7 +40,7 @@
   import { zodClient } from "sveltekit-superforms/adapters";
   import { invalidateAll } from "$app/navigation";
   import { toast } from "$lib/util";
-  // import SuperDebug from "sveltekit-superforms";
+  import SuperDebug, { fileProxy } from "sveltekit-superforms";
 
   type Props = {
     data: SuperValidated<
@@ -65,6 +78,9 @@
     },
   });
 
+  const pdfFileProxy = fileProxy(form.form, "pdfFile");
+  const audioFileProxy = fileProxy(form.form, "audioFile");
+
   const { form: formData, enhance, delayed, isTainted, tainted } = form;
 
   function addItem(id: number, name: TagType) {
@@ -75,23 +91,10 @@
     $formData[name] = $formData[name].filter((i) => i !== id);
   }
 
-  let difficultyValue = $derived(
-    $formData.difficulty
-      ? {
-          value: $formData.difficulty,
-          label: difficultyLabels[$formData.difficulty as Difficulty],
-        }
-      : null,
-  );
-
-  let contentTypeValue = $derived(
-    $formData.contentType
-      ? {
-          value: $formData.contentType,
-          label: contentTypeLabels[$formData.contentType as ContentType],
-        }
-      : null,
-  );
+  const triggerContent = $derived({
+    difficulty: difficultyLabels[$formData.difficulty as Difficulty],
+    contentType: contentTypeLabels[$formData.contentType as ContentType],
+  });
 </script>
 
 <form
@@ -104,10 +107,10 @@
 >
   <div class="flex flex-col md:flex-row gap-8">
     <div class="w-full flex flex-col gap-6">
-      <Form.Field {form} name="title">
-        <Form.Control>
-          {#snippet children({ props }: { props: Control })}
-            <Form.Label required>Title</Form.Label>
+      <FormField {form} name="title">
+        <FormControl>
+          {#snippet children({ props })}
+            <FormLabel required>Title</FormLabel>
             <Input
               {...props}
               bind:value={$formData.title}
@@ -115,30 +118,30 @@
               type="text"
             />
           {/snippet}
-        </Form.Control>
-        <Form.Description>Judul Score</Form.Description>
-        <Form.FieldErrors />
-      </Form.Field>
+        </FormControl>
+        <FormDescription>Judul Score</FormDescription>
+        <FormFieldErrors />
+      </FormField>
 
-      <Form.Field {form} name="description">
-        <Form.Control>
-          {#snippet children({ props }: { props: Control })}
-            <Form.Label required>Deskripsi</Form.Label>
+      <FormField {form} name="description">
+        <FormControl>
+          {#snippet children({ props })}
+            <FormLabel required>Deskripsi</FormLabel>
             <Textarea
               {...props}
               bind:value={$formData.description}
               name="description"
             />
           {/snippet}
-        </Form.Control>
-        <Form.Description>Deskripsi Score</Form.Description>
-        <Form.FieldErrors />
-      </Form.Field>
+        </FormControl>
+        <FormDescription>Deskripsi Score</FormDescription>
+        <FormFieldErrors />
+      </FormField>
 
-      <Form.Field {form} name="price">
-        <Form.Control>
-          {#snippet children({ props }: { props: Control })}
-            <Form.Label required>Price</Form.Label>
+      <FormField {form} name="price">
+        <FormControl>
+          {#snippet children({ props })}
+            <FormLabel required>Price</FormLabel>
             <Input
               {...props}
               bind:value={$formData.price}
@@ -146,116 +149,117 @@
               type="number"
             />
           {/snippet}
-        </Form.Control>
-        <Form.Description>Enter the price of your score</Form.Description>
-        <Form.FieldErrors />
-      </Form.Field>
+        </FormControl>
+        <FormDescription>Enter the price of your score</FormDescription>
+        <FormFieldErrors />
+      </FormField>
 
-      <Form.Field {form} name="difficulty">
-        <Form.Control >
-          {#snippet children({ attrs })}
-                    <Form.Label required>Tingkat Kesulitan</Form.Label>
-            <Select.Root
-              selected={difficultyValue as any}
-              onSelectedChange={(v) => {
-                v && ($formData.difficulty = v.value as Difficulty);
-              }}
+      <FormField {form} name="difficulty">
+        <FormControl>
+          {#snippet children({ props })}
+            <FormLabel required>Tingkat Kesulitan</FormLabel>
+            <Select
+              bind:value={$formData.difficulty}
+              name="difficulty"
+              type="single"
             >
               <div class="flex items-center gap-2">
-                <Select.Trigger {...attrs}>
-                  <Select.Value placeholder="Tingkat Kesulitan" />
-                </Select.Trigger>
+                <SelectTrigger {...props}>
+                  {triggerContent.difficulty}
+                </SelectTrigger>
               </div>
-              <Select.Content>
+              <SelectContent>
                 {#each difficulties as item}
-                  <Select.Item value={item} label={difficultyLabels[item]} />
+                  <SelectItem value={item} label={difficultyLabels[item]} />
                 {/each}
-              </Select.Content>
-            </Select.Root>
-            <input hidden bind:value={$formData.difficulty} name={attrs.name} />
-                            {/snippet}
-                </Form.Control>
-      </Form.Field>
+              </SelectContent>
+            </Select>
+            <input hidden {...props} bind:value={$formData.difficulty} />
+          {/snippet}
+        </FormControl>
+      </FormField>
 
-      <Form.Field {form} name="contentType">
-        <Form.Control >
-          {#snippet children({ attrs })}
-                    <Form.Label required>Jenis Konten</Form.Label>
-            <Select.Root
-              selected={contentTypeValue as any}
-              onSelectedChange={(v) => {
-                v && ($formData.contentType = v.value as ContentType);
-              }}
+      <FormField {form} name="contentType">
+        <FormControl>
+          {#snippet children({ props })}
+            <FormLabel required>Jenis Konten</FormLabel>
+            <Select
+              bind:value={$formData.contentType}
+              name="contentType"
+              type="single"
             >
               <div class="flex items-center gap-2">
-                <Select.Trigger {...attrs}>
-                  <Select.Value placeholder="Jenis konten" />
-                </Select.Trigger>
+                <SelectTrigger {...props}>
+                  {triggerContent.contentType}
+                </SelectTrigger>
               </div>
-              <Select.Content>
+              <SelectContent>
                 {#each contentType as item}
-                  <Select.Item value={item} label={contentTypeLabels[item]} />
+                  <SelectItem value={item} label={contentTypeLabels[item]} />
                 {/each}
-              </Select.Content>
-            </Select.Root>
-            <input hidden bind:value={$formData.contentType} name={attrs.name} />
-                            {/snippet}
-                </Form.Control>
-      </Form.Field>
+              </SelectContent>
+            </Select>
+            <input hidden bind:value={$formData.contentType} {...props} />
+          {/snippet}
+        </FormControl>
+      </FormField>
     </div>
 
     <div class="w-full flex flex-col gap-6">
-      <Form.Field {form} name="pdfFile">
-        <Form.Control>
-          {#snippet children({ props }: { props: Control })}
-            <Form.Label required={!isEditing}>PDF File</Form.Label>
+      <FormField {form} name="pdfFile">
+        <FormControl>
+          {#snippet children({ props })}
+            <FormLabel required={!isEditing}>PDF File</FormLabel>
             <Input
               {...props}
-              on:input={(e) =>
+              oninput={(e) =>
                 ($formData.pdfFile = e.currentTarget.files?.item(0) as File)}
+              bind:files={$pdfFileProxy}
               name="pdfFile"
               type="file"
               accept="application/pdf"
             />
           {/snippet}
-        </Form.Control>
-        <Form.Description>Upload your score PDF file</Form.Description>
-        <Form.FieldErrors />
-      </Form.Field>
+        </FormControl>
+        <FormDescription>Upload your score PDF file</FormDescription>
+        <FormFieldErrors />
+      </FormField>
 
-      <Form.Field {form} name="audioFile">
-        <Form.Control>
-          {#snippet children({ props }: { props: Control })}
-            <Form.Label required={!isEditing}>Audio File</Form.Label>
+      <FormField {form} name="audioFile">
+        <FormControl>
+          {#snippet children({ props })}
+            <FormLabel required={!isEditing}>Audio File</FormLabel>
             <Input
               {...props}
-              on:input={(e) =>
+              oninput={(e) =>
                 ($formData.audioFile = e.currentTarget.files?.item(0) as File)}
+              bind:files={$audioFileProxy}
               name="audioFile"
               type="file"
               accept="audio/mpeg"
             />
           {/snippet}
-        </Form.Control>
-        <Form.Description>Upload your audio MP3 file</Form.Description>
-        <Form.FieldErrors />
-      </Form.Field>
+        </FormControl>
+        <FormDescription>Upload your audio MP3 file</FormDescription>
+        <FormFieldErrors />
+      </FormField>
 
       <div class="grid grid-cols-3 gap-4">
-        <Form.Fieldset {form} name="instruments" class="space-y-0">
+        <FormFieldset {form} name="instruments" class="space-y-0">
           <div class="mb-4">
-            <Form.Legend class="text-base">Instrumen</Form.Legend>
+            <FormLegend class="text-base">Instrumen</FormLegend>
           </div>
           <div class="space-y-2">
             {#each instrumentOptions as item}
               {@const checked = $formData.instruments.includes(item.id)}
               <div class="flex flex-row items-start space-x-3">
-                <Form.Control >
-                  {#snippet children({ attrs })}
-                                    <Checkbox
-                      {...attrs}
+                <FormControl>
+                  {#snippet children({ props })}
+                    <Checkbox
+                      {...props}
                       {checked}
-                      onCheckedChange={(v: any) => {
+                      value={item.id.toString()}
+                      onCheckedChange={(v) => {
                         if (v) {
                           addItem(item.id, "instruments");
                         } else {
@@ -263,38 +267,32 @@
                         }
                       }}
                     />
-                    <Form.Label class="font-normal">
+                    <FormLabel class="font-normal">
                       {item.name}
-                    </Form.Label>
-                    <input
-                      hidden
-                      type="checkbox"
-                      name={attrs.name}
-                      value={item.id}
-                      {checked}
-                    />
-                                                    {/snippet}
-                                </Form.Control>
+                    </FormLabel>
+                  {/snippet}
+                </FormControl>
               </div>
             {/each}
-            <Form.FieldErrors />
+            <FormFieldErrors />
           </div>
-        </Form.Fieldset>
+        </FormFieldset>
 
-        <Form.Fieldset {form} name="categories" class="space-y-0">
+        <FormFieldset {form} name="categories" class="space-y-0">
           <div class="mb-4">
-            <Form.Legend class="text-base">Kategori</Form.Legend>
+            <FormLegend class="text-base">Kategori</FormLegend>
           </div>
           <div class="space-y-2">
             {#each categoryOptions as item}
               {@const checked = $formData.categories.includes(item.id)}
               <div class="flex flex-row items-start space-x-3">
-                <Form.Control >
-                  {#snippet children({ attrs })}
-                                    <Checkbox
-                      {...attrs}
+                <FormControl>
+                  {#snippet children({ props })}
+                    <Checkbox
+                      {...props}
                       {checked}
-                      onCheckedChange={(v: any) => {
+                      value={item.id.toString()}
+                      onCheckedChange={(v) => {
                         if (v) {
                           addItem(item.id, "categories");
                         } else {
@@ -302,38 +300,32 @@
                         }
                       }}
                     />
-                    <Form.Label class="font-normal">
+                    <FormLabel class="font-normal">
                       {item.name}
-                    </Form.Label>
-                    <input
-                      hidden
-                      type="checkbox"
-                      name={attrs.name}
-                      value={item.id}
-                      {checked}
-                    />
-                                                    {/snippet}
-                                </Form.Control>
+                    </FormLabel>
+                  {/snippet}
+                </FormControl>
               </div>
             {/each}
-            <Form.FieldErrors />
+            <FormFieldErrors />
           </div>
-        </Form.Fieldset>
+        </FormFieldset>
 
-        <Form.Fieldset {form} name="allocations" class="space-y-0">
+        <FormFieldset {form} name="allocations" class="space-y-0">
           <div class="mb-4">
-            <Form.Legend class="text-base">Peruntukan</Form.Legend>
+            <FormLegend class="text-base">Peruntukan</FormLegend>
           </div>
           <div class="space-y-2">
             {#each allocationOptions as item}
               {@const checked = $formData.allocations.includes(item.id)}
               <div class="flex flex-row items-start space-x-3">
-                <Form.Control >
-                  {#snippet children({ attrs })}
-                                    <Checkbox
-                      {...attrs}
+                <FormControl>
+                  {#snippet children({ props })}
+                    <Checkbox
+                      {...props}
                       {checked}
-                      onCheckedChange={(v: any) => {
+                      value={item.id.toString()}
+                      onCheckedChange={(v) => {
                         if (v) {
                           addItem(item.id, "allocations");
                         } else {
@@ -341,29 +333,22 @@
                         }
                       }}
                     />
-                    <Form.Label class="font-normal">
+                    <FormLabel class="font-normal">
                       {item.name}
-                    </Form.Label>
-                    <input
-                      hidden
-                      type="checkbox"
-                      name={attrs.name}
-                      value={item.id}
-                      {checked}
-                    />
-                                                    {/snippet}
-                                </Form.Control>
+                    </FormLabel>
+                  {/snippet}
+                </FormControl>
               </div>
             {/each}
-            <Form.FieldErrors />
+            <FormFieldErrors />
           </div>
-        </Form.Fieldset>
+        </FormFieldset>
       </div>
     </div>
   </div>
-  <Form.Button loading={$delayed} disabled={!isTainted($tainted)}
-    >Submit</Form.Button
-  >
+  <FormButton loading={$delayed} disabled={!isTainted($tainted)}>
+    Submit
+  </FormButton>
 </form>
 
-<!-- <SuperDebug data={$formData} /> -->
+<SuperDebug data={$formData} />

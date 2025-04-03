@@ -24,7 +24,7 @@
 	{...restProps}
 >
 	{#snippet children({ checked, indeterminate })}
-		<span class="flex items-center justify-center text-current">
+		<span class="flex items-center justify-center text-current h-full">
 			{#if indeterminate}
 				<Minus class="size-4" />
 			{:else}

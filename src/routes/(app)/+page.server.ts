@@ -27,6 +27,9 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
   const categoriesParams = params.getParams('categories');
   const instrumentsParams = params.getParams('instruments');
   const allocationsParams = params.getParams('allocations');
+  const titleParam = params.getParam('title');
+  const difficultyParam = params.getParam('difficulty');
+  const contentTypeParam = params.getParam('content_type');
 
   const urlParamsString = params.getUrlParamsString()
 
@@ -53,12 +56,12 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
   }
 
   const form = await superValidate({
-    title: url.searchParams.get('title') ?? '',
+    title: titleParam ?? "",
     instrument: instrumentsParams,
     category: categoriesParams,
     allocation: allocationsParams,
-    difficulty: url.searchParams.get('difficulty') ?? undefined,
-    contentType: url.searchParams.get('content_type') ?? undefined,
+    difficulty: difficultyParam ?? '',
+    contentType: contentTypeParam ?? '',
   }, zod(mainSearchFormSchema));
 
 

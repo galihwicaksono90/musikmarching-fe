@@ -32,13 +32,15 @@
     type ContentType,
     type Difficulty,
   } from "$lib/model";
+  import { page } from "$app/stores";
+  import { goto } from "$app/navigation";
 
   let { data, instrumentOptions, categoryOptions, allocationOptions }: Props =
     $props();
 
   const form = superForm(data, { resetForm: false });
 
-  const { form: formData, enhance, errors } = form;
+  const { form: formData, enhance, isTainted, tainted } = form;
 
   function addItem(id: string, name: "instrument" | "category" | "allocation") {
     $formData[name] = [...$formData[name], id];
@@ -66,6 +68,7 @@
     method="POST"
     use:enhance
     id="main-search-form"
+    onreset={() => goto("/")}
   >
     <div class="flex items-center gap-2 flex-1">
       <FormField {form} name="title" class="flex-1">
@@ -81,10 +84,8 @@
     </div>
 
     <div class="flex flex-col gap-2">
-      <Button type="submit">Cari</Button>
-      <a href="/">
-        <Button type="button" variant="outline" class="w-full">Reset</Button>
-      </a>
+      <Button type="submit" disabled={!isTainted($tainted)}>Cari</Button>
+      <Button type="reset" variant="outline" class="w-full" disabled={$page.url.searchParams.size === 0}>Reset</Button>
     </div>
     <FormFieldset {form} name="category" class="space-y-0">
       <AccordionItem value="category">
@@ -241,7 +242,6 @@
               {/each}
             </SelectContent>
           </Select>
-          <input hidden bind:value={$formData.difficulty} {...props} />
         {/snippet}
       </FormControl>
     </FormField>
@@ -271,9 +271,10 @@
               {/each}
             </SelectContent>
           </Select>
-          <input hidden bind:value={$formData.contentType} {...props} />
         {/snippet}
       </FormControl>
     </FormField>
   </form>
 </Accordion>
+
+<!-- <pre>{JSON.stringify($tainted, null, 4)}</pre> -->
