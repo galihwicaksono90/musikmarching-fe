@@ -16,7 +16,7 @@
 	});
 </script>
 
-<audio controls bind:this={player} class="w-full bg-red-500">
+<audio controls bind:this={player} class="w-full">
 	<source {src} type="audio/mpeg" />
 	Your browser does not support the audio element.
 </audio>

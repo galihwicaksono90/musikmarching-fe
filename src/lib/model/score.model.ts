@@ -64,6 +64,27 @@ export const publicScoreSchema = scoreSchema.pick({
   email: z.string(),
 })
 
+export const libraryScoreSchema = scoreSchema.pick({
+  id: true,
+  title: true,
+  description: true,
+  price: true,
+  difficulty: true,
+  content_type: true,
+  pdf_image_urls: true,
+  pdf_url: true,
+  audio_url: true,
+  created_at: true,
+  is_verified: true,
+  verified_at: true,
+  instruments: true,
+  allocations: true,
+  categories: true,
+}).extend({
+  author_name: z.string(),
+  email: z.string(),
+})
+
 export const purchasedScoreSchema = scoreSchema.pick({
   id: true,
   title: true,
@@ -80,13 +101,13 @@ export const purchasedScoreSchema = scoreSchema.pick({
   email: z.string(),
 })
 
-
-
 export type PublicScore = z.infer<typeof publicScoreSchema>;
 
 export type Score = z.infer<typeof scoreSchema>;
 
 export type PurchasedScore = z.infer<typeof purchasedScoreSchema>;
+
+export type LibraryScore = z.infer<typeof libraryScoreSchema>;
 
 export const contributorScoreSchema = scoreSchema.pick({
   id: true,

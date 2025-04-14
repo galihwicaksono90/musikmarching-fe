@@ -14,7 +14,7 @@
 
 {#snippet loggedIn(user: User)}
 	<DropdownMenu.Root>
-		<DropdownMenu.Trigger asChild>
+		<DropdownMenu.Trigger>
 			{#snippet children()}
 				<Button variant="secondary" size="icon" class="rounded-full ml-auto">
 					<Avatar>

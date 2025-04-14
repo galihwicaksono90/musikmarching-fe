@@ -1,79 +1,14 @@
 <script lang="ts">
 	import type { Snippet } from "svelte";
 	import type { LayoutData } from "./$types";
-	import { AdminSidebar } from "$lib/components/common";
-	import CircleUser from "lucide-svelte/icons/circle-user";
-	import Menu from "lucide-svelte/icons/menu";
-
-	import { Button } from "$lib/components/ui/button/index.js";
-	import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
-	import * as Sheet from "$lib/components/ui/sheet/index.js";
+	import { LoggedInLayout } from "$lib/components/common";
+	import { adminLayoutData } from "$lib/components/common/layout/logged-in-layout/logged-in-layout.model";
 
 	let { children }: { data: LayoutData; children: Snippet } = $props();
 </script>
 
-<div
-	class="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]"
->
-	<div class="bg-muted/40 hidden border-r md:block">
-		<div class="flex h-full max-h-screen flex-col gap-2">
-			<div class="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-				<a href="/admin" class="flex items-center gap-2 font-semibold">
-					<span class="">Musikmarching Admin</span>
-				</a>
-			</div>
-			<div class="flex-1">
-				<AdminSidebar />
-			</div>
-		</div>
-	</div>
-	<div class="flex flex-col">
-		<header
-			class="bg-muted/40 flex h-14 items-center gap-4 border-b px-4 lg:h-[60px] lg:px-6"
-		>
-			<Sheet.Root>
-				<Sheet.Trigger>
-					{#snippet children()}
-						<Button variant="outline" size="icon" class="shrink-0 md:hidden">
-							<Menu class="h-5 w-5" />
-							<span class="sr-only">Toggle navigation menu</span>
-						</Button>
-					{/snippet}
-				</Sheet.Trigger>
-				<Sheet.Content side="left" class="flex flex-col">
-					<nav class="grid gap-2 text-lg font-medium">
-						<AdminSidebar size="large" />
-					</nav>
-				</Sheet.Content>
-			</Sheet.Root>
-			<a href="/admin" class="flex items-center gap-2 font-semibold md:hidden">
-				<span class="">Musikmarching Admin</span>
-			</a>
-			<DropdownMenu.Root>
-				<DropdownMenu.Trigger>
-					{#snippet children()}
-						<Button
-							variant="secondary"
-							size="icon"
-							class="rounded-full ml-auto"
-						>
-							<CircleUser class="h-5 w-5" />
-							<span class="sr-only">Toggle user menu</span>
-						</Button>
-					{/snippet}
-				</DropdownMenu.Trigger>
-				<DropdownMenu.Content align="end">
-					<DropdownMenu.Label>My Account</DropdownMenu.Label>
-					<DropdownMenu.Separator />
-					<DropdownMenu.Item>Settings</DropdownMenu.Item>
-					<DropdownMenu.Item>Support</DropdownMenu.Item>
-					<DropdownMenu.Separator />
-					<DropdownMenu.Item>Logout</DropdownMenu.Item>
-				</DropdownMenu.Content>
-			</DropdownMenu.Root>
-		</header>
-		<main class="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-			{@render children()}
-		</main>
-	</div>
-</div>
+<LoggedInLayout data={adminLayoutData}>
+	<main class="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+		{@render children()}
+	</main>
+</LoggedInLayout>

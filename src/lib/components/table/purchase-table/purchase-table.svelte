@@ -23,7 +23,6 @@
 {/snippet}
 
 <section class="flex flex-col gap-8 w-full">
-  <h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">Pembelian</h3>
   <Table.Root class="w-full">
     <Table.Header>
       <Table.Row>
@@ -37,6 +36,6 @@
         {@render tableBody({ item })}
       {/each}
     </Table.Body>
-    <Table.Caption>Dafter pembelian</Table.Caption>
+    <Table.Caption>Daftar pembelian</Table.Caption>
   </Table.Root>
 </section>

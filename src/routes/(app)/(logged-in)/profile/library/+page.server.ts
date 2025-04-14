@@ -1,28 +1,29 @@
-import { purchaseSchema, } from "$lib/model";
-import { uploadPurchaseProofFormSchema } from "$lib/components/form";
+import { libraryScoreSchema } from "$lib/model";
 import type { PageServerLoad, Actions } from "./$types";
 import { z } from "zod";
 import { fail } from "@sveltejs/kit";
 
-export const load: PageServerLoad = async ({ fetch }) => {
-  const res = await fetch('http://localhost:8080/api/v1/purchase').then((r) => r.json());
-  console.log({ res })
+export const load: PageServerLoad = async ({ fetch, url }) => {
+  const res = await fetch('http://localhost:8080/api/v1/purchase/scores/library').then((r) => r.json());
 
   if (res?.meta?.code !== 200) {
     return {
-      purchases: [],
+      scores: [],
+      count: 0
     }
   }
 
-  const parsedPurchases = z.array(purchaseSchema).safeParse(res.data);
-  if (!parsedPurchases.success) {
+  const parsedScores = z.object({ scores: libraryScoreSchema.array(), count: z.number() }).safeParse(res.data);
+  if (!parsedScores.success) {
     return {
-      purchases: [],
+      scores: [],
+      count: 0
     }
   }
 
   return {
-    purchases: parsedPurchases.data,
+    scores: parsedScores.data.scores,
+    count: parsedScores.data.count
   };
 };
 

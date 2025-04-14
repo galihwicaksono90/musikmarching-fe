@@ -70,7 +70,7 @@
         <Separator />
         <div class="grid grid-cols-2 gap-4 text-sm">
           {@render scoreProperty(
-            "Tinkat Kesulitan",
+            "Tingkat Kesulitan",
             difficultyLabels[data.score.difficulty],
           )}
           {@render scoreProperty("Instrumen", data.score.instruments)}
