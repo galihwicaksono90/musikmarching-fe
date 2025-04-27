@@ -5,7 +5,7 @@ export const load: LayoutServerLoad = async ({ parent }) => {
   const { user } = await parent()
 
   if (!user || user.role_name !== "contributor") {
-    throw redirect(303, 'https://google.com');
+    throw redirect(303, '/');
   }
 
   return {

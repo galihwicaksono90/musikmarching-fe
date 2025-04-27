@@ -44,6 +44,16 @@ export const scoreSchema = z.object({
   deleted_at: timeSchema.nullish(),
 })
 
+export const contributorBestSellingScoreSchema = scoreSchema.pick({
+  id: true,
+  title: true,
+}).extend({
+  count: z.number(),
+  revenue: z.number(),
+})
+
+export type ContributorBestSellingScore = z.infer<typeof contributorBestSellingScoreSchema>;
+
 export const publicScoreSchema = scoreSchema.pick({
   id: true,
   title: true,
@@ -126,6 +136,7 @@ export const contributorScoreSchema = scoreSchema.pick({
   categories: z.number().array(),
   instruments: z.number().array(),
   allocations: z.number().array(),
+  purchase_count: z.number().nullish().default(0),
 })
 
 export type ContributorScore = z.infer<typeof contributorScoreSchema>;

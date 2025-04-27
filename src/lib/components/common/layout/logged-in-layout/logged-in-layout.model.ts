@@ -14,6 +14,7 @@ export type LoggedInLayoutItem = {
   icon: typeof IconType
   disabled?: boolean
   isVisible?: boolean
+  description?: string
 }
 
 export type LoggedInLayoutMenuSeparator = {
@@ -36,13 +37,17 @@ export type LoggedInLayoutMenuLink = {
 }
 
 export type LoggedInLayoutProps = {
+  header: string
   title: string
+  description: string
   items: LoggedInLayoutItem[]
   menuItems: (LoggedInLayoutMenuLink | LoggedInLayoutMenuSeparator | LoggedInLayoutMenuLabel)[],
 }
 
 export const profileLayoutData: LoggedInLayoutProps = {
-  title: 'Music Marching',
+  header: 'Music Marching',
+  title: 'My Account',
+  description: 'Manage your account settings and purchased music scores.',
   items: [
     {
       href: '/profile/library',
@@ -86,7 +91,9 @@ export const profileLayoutData: LoggedInLayoutProps = {
 }
 
 export const contributorLayoutData: LoggedInLayoutProps = {
+  header: 'Contributor',
   title: 'Contributor Dashboard',
+  description: 'Manage your music scores and track your sales performance.',
   items: [
     {
       title: "Overview",
@@ -96,6 +103,12 @@ export const contributorLayoutData: LoggedInLayoutProps = {
     {
       title: "Scores",
       href: "/contributor/score",
+      icon: ShoppingCart,
+      description: 'hello'
+    },
+    {
+      title: "Payments",
+      href: "/contributor/payments",
       icon: ShoppingCart,
     },
   ],
@@ -125,7 +138,9 @@ export const contributorLayoutData: LoggedInLayoutProps = {
 };
 
 export const adminLayoutData: LoggedInLayoutProps = {
-  title: 'Admin',
+  header: 'Admin',
+  title: 'Admin Dashboard',
+  description: 'Manage your music scores and track your sales performance.',
   items: [
     {
       title: "Dashboard",

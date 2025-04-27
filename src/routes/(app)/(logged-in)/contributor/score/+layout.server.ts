@@ -3,7 +3,7 @@ import type { Category, Instrument, Allocation } from "$lib/model"
 import { instrumentSchema, categorySchema, allocationSchema } from "$lib/model"
 import { z } from 'zod';
 
-export const load: LayoutServerLoad = async ({}) => {
+export const load: LayoutServerLoad = async () => {
   const tags: {
     instrumentOptions: Instrument[],
     categoryOptions: Category[],

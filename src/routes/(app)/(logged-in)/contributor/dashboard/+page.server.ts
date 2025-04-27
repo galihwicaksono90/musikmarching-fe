@@ -1,23 +1,30 @@
-import {  superValidate } from "sveltekit-superforms";
-import { zod } from "sveltekit-superforms/adapters";
 import type { PageServerLoad } from "./$types";
-import { contributorRegisterSchema } from "$lib/components/form";
-import { contributorScoreSchema, type ContributorScore } from "$lib/model";
+import { contributorStatisticsSchema, contributorBestSellingScoreSchema, type ContributorBestSellingScore } from "$lib/model";
 
-export const load: PageServerLoad = async ({ fetch, parent }) => {
-  let scores: ContributorScore[] = []
-  const data = await parent();
+export const load: PageServerLoad = async ({ fetch }) => {
+  const statisticsData = await fetch('http://localhost:8080/api/v1/contributor/scores/statistics').then((r) => r.json());
+  const bestSellingData = await fetch('http://localhost:8080/api/v1/contributor/scores/best-selling').then((r) => r.json());
 
-  const scoresData = await fetch('http://localhost:8080/api/v1/contributor/scores').then((r) => r.json());
-  const parsedScores = contributorScoreSchema.array().safeParse(scoresData.data);
+  let scores: ContributorBestSellingScore[] = []
+  const parsedStatistics = contributorStatisticsSchema.safeParse(statisticsData.data);
+  const parsedScores = contributorBestSellingScoreSchema.array().safeParse(bestSellingData.data);
   if (parsedScores.success) {
-    scores = parsedScores.data
+    scores = parsedScores.data;
+  }
+
+  if (!parsedStatistics.success) {
+    return {
+      scores,
+      statisics: {
+        revenue: 0,
+        score_count: 0,
+        purchase_count: 0,
+      }
+    }
   }
 
   return {
     scores,
-    form: await superValidate({
-      full_name: data.user?.name,
-    }, zod(contributorRegisterSchema))
+    statistics: parsedStatistics.data,
   };
 };

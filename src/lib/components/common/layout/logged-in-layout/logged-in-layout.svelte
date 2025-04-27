@@ -9,9 +9,15 @@
   let { data, children }: { children: Snippet; data: LoggedInLayoutProps } =
     $props();
 
-  let title = $derived(
-    data.items.find((item) => $page.url.pathname.startsWith(item.href))?.title,
-  );
+  let header = $derived(() => {
+    const item = data.items.find((item) =>
+      $page.url.pathname.startsWith(item.href),
+    );
+    return {
+      title: item?.title ?? "",
+      description: item?.description ?? "",
+    };
+  });
 </script>
 
 <div
@@ -21,7 +27,7 @@
     <div class="flex h-full max-h-screen flex-col gap-2">
       <div class="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
         <a href="/" class="flex items-center gap-2 font-semibold">
-          <span class="">{data.title}</span>
+          <span class="">{data.header}</span>
         </a>
       </div>
       <div class="flex-1">
@@ -33,15 +39,24 @@
     <Menu {data} />
     <main class="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <div class="flex flex-col gap-2">
-      <h1 class="text-3xl font-bold">My Account</h1>
-      <p class="text-sm text-muted-foreground">
-        Manage your account settings and purchased music scores.
-      </p>
+        <h1 class="text-3xl font-bold">{data.title}</h1>
+        <p class="text-sm text-muted-foreground">
+          {data.description}
+        </p>
       </div>
-      <h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">
-        {title}
-      </h3>
+      <div>
+        <h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">
+          {header().title}
+        </h3>
+        <p class="text-sm text-muted-foreground">{header().description}</p>
+      </div>
       {@render children()}
     </main>
   </div>
 </div>
+
+<footer class="bg-gray-100 mt-auto">
+  <div class="container mx-auto py-4 flex justify-center">
+    Copyright © 2025 MusikMarching
+  </div>
+</footer>

@@ -1,8 +1,8 @@
 import type { PageServerLoad, Actions } from "./$types.js";
-import { superValidate, withFiles } from "sveltekit-superforms";
+import { superValidate, withFiles, fail } from "sveltekit-superforms";
 import { createScoreFormSchema } from "$lib/components/form";
 import { zod } from "sveltekit-superforms/adapters";
-import { fail, redirect } from "@sveltejs/kit";
+import { redirect } from "sveltekit-flash-message/server";
 
 export const load: PageServerLoad = async ({ parent }) => {
   const { tags } = await parent();
@@ -42,7 +42,11 @@ export const actions: Actions = {
     }).then((res) => res.json());
 
     if (result?.meta?.code === 201) {
-      redirect(303, `/contributor/score/${result.data}`);
+      redirect(
+        `/contributor/score`,
+        { type: "success", message: "Score Berhasil Dibuat" },
+        event.cookies
+      );
     }
 
     return {

@@ -16,7 +16,6 @@
   const flash = getFlash(page);
 
   $effect(() => {
-    console.log({ flash: $flash });
     if (!$flash) return;
 
     toast({
@@ -24,17 +23,11 @@
       message: $flash?.message,
     });
 
-    // $flash = undefined;
+    $flash = undefined;
   });
 
   let { data }: { data: PageData } = $props();
 
-  const onclick = () => {
-    toast({
-      type: "success",
-      message: "hello world",
-    });
-  };
 </script>
 
 {#snippet purchaseProofModal(url: string)}

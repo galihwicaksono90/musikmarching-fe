@@ -15,7 +15,7 @@
 
 <FormPrimitive.Label {...restProps} bind:ref>
 	{#snippet child({ props })}
-		<Label {...props} class={cn("data-[fs-error]:text-destructive", className)}>
+		<Label {...props} class={cn("data-[fs-error]:text-destructive font-bold", className)}>
 			{@render children?.()}
 			{#if required}
 				<span class="text-destructive">*</span>

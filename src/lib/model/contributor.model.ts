@@ -30,3 +30,11 @@ export const contributorAccountScoreSchema = contributorSchema.extend({
 })
 
 export type ContributorAccountScore = z.infer<typeof contributorAccountScoreSchema>;
+
+export const contributorStatisticsSchema = z.object({
+  revenue: z.number(),
+  purchase_count: z.number(),
+  score_count: z.number()
+})
+
+export type contributorStatistics = z.infer<typeof contributorStatisticsSchema>;

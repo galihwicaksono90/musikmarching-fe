@@ -71,7 +71,7 @@
 		{...restProps}
 	>
 		{#if loading}
-			<LoaderSpinner class="animate-spine" />
+			<LoaderSpinner class="animate-spin" />
 		{/if}
 		{@render children?.()}
 	</a>

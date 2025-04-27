@@ -35,6 +35,6 @@ export const actions: Actions = {
       method: 'POST',
     }).then(res => res.json())
 
-    redirect(`/profile/purchase/${res.data}`, { type: 'success', message: 'Score berhasil dibeli' }, event.cookies);
+    redirect(`/profile/purchases/${res.data}`, { type: 'success', message: 'Score berhasil dibeli' }, event.cookies);
   }
 }
