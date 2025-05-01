@@ -109,6 +109,7 @@ export const purchasedScoreSchema = scoreSchema.pick({
 }).extend({
   full_name: z.string(),
   email: z.string(),
+  purchase_count: z.number().default(0)
 })
 
 export type PublicScore = z.infer<typeof publicScoreSchema>;
@@ -136,7 +137,11 @@ export const contributorScoreSchema = scoreSchema.pick({
   categories: z.number().array(),
   instruments: z.number().array(),
   allocations: z.number().array(),
-  purchase_count: z.number().nullish().default(0),
+  purchase_count: z.number().default(0),
 })
 
 export type ContributorScore = z.infer<typeof contributorScoreSchema>;
+
+export const deleteScoreSchema = z.object({
+  id: z.string().uuid()
+})

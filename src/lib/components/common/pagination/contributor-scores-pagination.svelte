@@ -1,38 +1,31 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
   import * as Pagination from "$lib/components/ui/pagination";
   import ChevronsLeft from "lucide-svelte/icons/chevrons-left";
   import ChevronsRight from "lucide-svelte/icons/chevrons-right";
 
   let {
-    page = 1,
+    page: currentPage,
     count,
     limit,
-  }: { page: number; count: number; limit: number } = $props();
-
-  const addQueryParams = (newPage: string) => {
-    const newParams = new URLSearchParams(window.location.search);
-    newParams.set("page", newPage);
-    goto(`${window.location.pathname}?${newParams.toString()}`);
-  };
-
-  function setPage(newPage: number) {
-    addQueryParams(newPage.toString());
-  }
+    setPage,
+  }: {
+    page: number;
+    count: number;
+    limit: number;
+    setPage: (page: number) => void;
+  } = $props();
 </script>
 
 <div>
   <Pagination.Root
     {count}
     perPage={limit}
-    
-    
-    bind:page={() => page, setPage}
+    bind:page={() => currentPage, setPage}
   >
-    {#snippet children({ pages, currentPage })}
-        <Pagination.Content>
+    {#snippet children({ pages, page })}
+      <Pagination.Content>
         <Pagination.Item>
-          <Pagination.PrevButton disabled={currentPage === 1}
+          <Pagination.PrevButton disabled={page === 1}
             ><ChevronsLeft /></Pagination.PrevButton
           >
         </Pagination.Item>
@@ -55,6 +48,6 @@
           </Pagination.NextButton>
         </Pagination.Item>
       </Pagination.Content>
-          {/snippet}
-    </Pagination.Root>
+    {/snippet}
+  </Pagination.Root>
 </div>

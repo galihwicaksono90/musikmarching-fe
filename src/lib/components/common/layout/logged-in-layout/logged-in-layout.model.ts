@@ -104,7 +104,7 @@ export const contributorLayoutData: LoggedInLayoutProps = {
       title: "Scores",
       href: "/contributor/score",
       icon: ShoppingCart,
-      description: 'hello'
+      description: 'Manage your music scores and track your sales performance.',
     },
     {
       title: "Payments",
