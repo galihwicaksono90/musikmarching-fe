@@ -1,7 +1,7 @@
 import type { PageServerLoad, Actions } from "./$types.js";
 import { contributorScoreSchema, type ContributorScore } from '$lib/model'
 import { deleteScoreSchema } from "$lib/model";
-import { message, superValidate } from "sveltekit-superforms/server";
+import { message, superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 
 export const load: PageServerLoad = async ({ fetch }) => {
@@ -20,12 +20,24 @@ export const load: PageServerLoad = async ({ fetch }) => {
 }
 
 export const actions: Actions = {
-  delete: async ({ request }) => {
-    console.log("======")
-    console.log("======")
+  delete: async ({ request, fetch }) => {
     const form = await superValidate(request, zod(deleteScoreSchema))
     if (!form.valid) {
       return message(form, { message: "Invalid ID", type: 'error' });
+    }
+
+    try {
+      const res = await fetch(`http://localhost:8080/api/v1/contributor/score/${form.id}`, {
+        method: 'DELETE'
+      }).then((r) => r.json());
+      console.log({ res })
+      if (res.meta.code !== 200) {
+        return message(form, { message: "Score not deleted", type: 'success' });
+      }
+      return message(form, { message: "Score deleted", type: 'success' });
+    } catch(e) {
+      console.log({ e })
+      return message(form, { message: "Score not deleted", type: 'success' });
     }
   }
 }

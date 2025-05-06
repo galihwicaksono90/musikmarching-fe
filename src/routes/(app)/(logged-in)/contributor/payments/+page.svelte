@@ -21,9 +21,11 @@
         </Card.Header>
         <Card.Content>
           {#if data.stat.latest_payment}
-            <div class="text-2xl font-bold">
+            <div class="text-xl font-bold">
               {new Date(data.stat.latest_payment).toLocaleString("id-ID")}
             </div>
+          {:else}
+            <div class="text-xl font-bold">-</div>
           {/if}
         </Card.Content>
       </Card.Root>

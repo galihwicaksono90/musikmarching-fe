@@ -59,11 +59,11 @@ export const profileLayoutData: LoggedInLayoutProps = {
       title: 'Transaksi',
       icon: Package,
     },
-    {
-      href: '/profile/settings',
-      title: 'Pengaturan',
-      icon: Settings,
-    },
+    // {
+    //   href: '/profile/settings',
+    //   title: 'Pengaturan',
+    //   icon: Settings,
+    // },
   ],
   menuItems: [
     { type: 'label', title: "My Account" },

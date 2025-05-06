@@ -132,6 +132,7 @@ export const contributorScoreSchema = scoreSchema.pick({
   difficulty: true,
   content_type: true,
   verified_at: true,
+  deleted_at: true,
 }).extend({
   contributor_id: z.string().uuid(),
   categories: z.number().array(),
