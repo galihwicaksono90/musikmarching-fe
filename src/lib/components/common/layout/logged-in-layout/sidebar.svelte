@@ -4,7 +4,7 @@
     LoggedInLayoutItem,
   } from "./logged-in-layout.model";
   import { page } from "$app/stores";
-  import { Button } from "$lib/components/ui";
+  import { Button, Separator } from "$lib/components/ui";
 
   type SidebarItem = LoggedInLayoutItem;
   type Size = "large" | "normal";
@@ -42,13 +42,21 @@
 {#if size === "normal"}
   <nav class="grid items-start px-2 text-sm font-medium lg:px-4 gap-2">
     {#each sidebarItems as item}
-      {@render adminSidebarItemNormal(item)}
+      {#if item.type === "separator"}
+        <Separator />
+      {:else}
+        {@render adminSidebarItemNormal(item)}
+      {/if}
     {/each}
   </nav>
 {:else if size === "large"}
   <nav class="grid gap-2 text-lg font-medium">
     {#each sidebarItems as item}
-      {@render adminSidebarItemLarge(item)}
+      {#if item.type === "separator"}
+        <Separator />
+      {:else}
+        {@render adminSidebarItemLarge(item)}
+      {/if}
     {/each}
   </nav>
 {/if}

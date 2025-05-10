@@ -8,13 +8,22 @@ import Music from "@lucide/svelte/icons/music";
 import Package from "@lucide/svelte/icons/package";
 import Settings from "@lucide/svelte/icons/settings";
 
-export type LoggedInLayoutItem = {
+export type LoggedInLayoutItemSeparator = {
+  type: 'separator'
+}
+
+export type LoggedInLayoutItemLink = {
+  type: 'link'
   href: string
   title: string
   icon: typeof IconType
   disabled?: boolean
-  isVisible?: boolean
   description?: string
+}
+
+
+export type LoggedInLayoutItem = LoggedInLayoutItemLink | LoggedInLayoutItemSeparator & {
+  isVisible?: boolean
 }
 
 export type LoggedInLayoutMenuSeparator = {
@@ -50,13 +59,24 @@ export const profileLayoutData: LoggedInLayoutProps = {
   description: 'Manage your account settings and purchased music scores.',
   items: [
     {
+      type: 'link',
       href: '/profile/library',
       title: 'Koleksi',
       icon: Music,
     },
     {
+      type: 'link',
       href: '/profile/purchases',
       title: 'Transaksi',
+      icon: Package,
+    },
+    {
+      type: 'separator'
+    },
+    {
+      type: 'link',
+      href: '/profile/contributor-register',
+      title: 'Daftar Kontributor',
       icon: Package,
     },
     // {
@@ -96,17 +116,20 @@ export const contributorLayoutData: LoggedInLayoutProps = {
   description: 'Manage your music scores and track your sales performance.',
   items: [
     {
+      type: 'link',
       title: "Overview",
       href: "/contributor/dashboard",
       icon: CircleUser,
     },
     {
+      type: 'link',
       title: "Scores",
       href: "/contributor/score",
       icon: ShoppingCart,
       description: 'Manage your music scores and track your sales performance.',
     },
     {
+      type: 'link',
       title: "Payments",
       href: "/contributor/payments",
       icon: ShoppingCart,
@@ -143,21 +166,25 @@ export const adminLayoutData: LoggedInLayoutProps = {
   description: 'Manage your music scores and track your sales performance.',
   items: [
     {
+      type: 'link',
       title: "Dashboard",
       href: "/admin",
       icon: CircleUser,
     },
     {
+      type: 'link',
       title: "Scores",
       href: "/admin/scores",
       icon: ShoppingCart,
     },
     {
+      type: 'link',
       title: "Contributor",
       href: "/admin/contributor",
       icon: ShoppingCart,
     },
     {
+      type: 'link',
       title: "Purchases",
       href: "/admin/purchases",
       icon: ShoppingCart,
