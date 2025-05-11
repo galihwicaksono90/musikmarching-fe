@@ -13,7 +13,7 @@ export type LoggedInLayoutItemSeparator = {
 }
 
 export type LoggedInLayoutItemLink = {
-  type: 'link'
+  type: 'link',
   href: string
   title: string
   icon: typeof IconType
@@ -21,10 +21,7 @@ export type LoggedInLayoutItemLink = {
   description?: string
 }
 
-
-export type LoggedInLayoutItem = LoggedInLayoutItemLink | LoggedInLayoutItemSeparator & {
-  isVisible?: boolean
-}
+export type LoggedInLayoutItem = LoggedInLayoutItemLink | LoggedInLayoutItemSeparator;
 
 export type LoggedInLayoutMenuSeparator = {
   type: 'separator',
@@ -71,19 +68,26 @@ export const profileLayoutData: LoggedInLayoutProps = {
       icon: Package,
     },
     {
-      type: 'separator'
+      type: 'link',
+      href: '/profile/settings',
+      title: 'Pengaturan',
+      icon: Settings,
     },
     {
       type: 'link',
-      href: '/profile/contributor-register',
-      title: 'Daftar Kontributor',
-      icon: Package,
+      href: '/profile/settings',
+      title: 'Pengaturan',
+      icon: Settings,
     },
-    // {
-    //   href: '/profile/settings',
-    //   title: 'Pengaturan',
-    //   icon: Settings,
-    // },
+    {
+      type: 'separator',
+    },
+    {
+      type: 'link',
+      href: '/profile/contributor-apply',
+      title: 'Contributor Apply',
+      icon: Settings,
+    },
   ],
   menuItems: [
     { type: 'label', title: "My Account" },

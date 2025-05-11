@@ -45,7 +45,7 @@
 
   <Form.Field {form} name="full_name">
     <Form.Control>
-      {#snippet children({ props }: { props: Control })}
+      {#snippet children({ props })}
         <Form.Label required>Full Name</Form.Label>
         <Input
           {...props}

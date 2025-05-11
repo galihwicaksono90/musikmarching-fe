@@ -10,9 +10,12 @@
     $props();
 
   let header = $derived(() => {
-    const item = data.items.find((item) =>
-      $page.url.pathname.startsWith(item.href),
-    );
+    const item = data.items.find((item) => {
+      if (item.type !== "link") return;
+      return $page.url.pathname.startsWith(item.href);
+    });
+
+    if (item?.type !== "link") return;
     return {
       title: item?.title ?? "",
       description: item?.description ?? "",
@@ -46,9 +49,9 @@
       </div>
       <div>
         <h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">
-          {header().title}
+          {header()?.title}
         </h3>
-        <p class="text-sm text-muted-foreground">{header().description}</p>
+        <p class="text-sm text-muted-foreground">{header()?.description}</p>
       </div>
       {@render children()}
     </main>

@@ -1,12 +1,11 @@
 <script lang="ts">
   import type {
     LoggedInLayoutProps,
-    LoggedInLayoutItem,
+    LoggedInLayoutItemLink,
   } from "./logged-in-layout.model";
   import { page } from "$app/stores";
   import { Button, Separator } from "$lib/components/ui";
 
-  type SidebarItem = LoggedInLayoutItem;
   type Size = "large" | "normal";
 
   let { data, size = "normal" }: { data: LoggedInLayoutProps; size?: Size } =
@@ -16,7 +15,7 @@
   let pathname = $derived($page.url.pathname);
 </script>
 
-{#snippet adminSidebarItemNormal({ title, href, icon }: SidebarItem)}
+{#snippet adminSidebarItemNormal({ title, href, icon }: LoggedInLayoutItemLink)}
   {@const Icon = icon}
   <Button
     {href}
@@ -28,7 +27,7 @@
   </Button>
 {/snippet}
 
-{#snippet adminSidebarItemLarge({ title, href, icon }: SidebarItem)}
+{#snippet adminSidebarItemLarge({ title, href, icon }: LoggedInLayoutItemLink)}
   {@const Icon = icon}
   <a
     {href}
@@ -42,20 +41,20 @@
 {#if size === "normal"}
   <nav class="grid items-start px-2 text-sm font-medium lg:px-4 gap-2">
     {#each sidebarItems as item}
-      {#if item.type === "separator"}
-        <Separator />
-      {:else}
+      {#if item.type === "link"}
         {@render adminSidebarItemNormal(item)}
+      {:else if item.type === "separator"}
+        <Separator />
       {/if}
     {/each}
   </nav>
 {:else if size === "large"}
   <nav class="grid gap-2 text-lg font-medium">
     {#each sidebarItems as item}
-      {#if item.type === "separator"}
-        <Separator />
-      {:else}
+      {#if item.type === "link"}
         {@render adminSidebarItemLarge(item)}
+      {:else if item.type === "separator"}
+        <Separator />
       {/if}
     {/each}
   </nav>
