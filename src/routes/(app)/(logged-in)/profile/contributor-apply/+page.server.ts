@@ -13,10 +13,6 @@ export const load: PageServerLoad = async ({ parent, fetch }) => {
     return redirect(303, '/')
   }
 
-  if (user?.role_name === 'contributor') {
-    return redirect(303, '/contributor')
-  }
-
   let contributorApplyData
   const res = await fetch("http://localhost:8080/api/v1/account/contributor-apply").then(res => res.json())
 
@@ -27,6 +23,10 @@ export const load: PageServerLoad = async ({ parent, fetch }) => {
     if (ress.success) {
       contributorApplyData = ress.data
     }
+  }
+
+  if (user?.role_name === 'contributor') {
+    return redirect(301, '/contributor')
   }
 
   let initialData: ContributorUpdateFormSchema | undefined = undefined

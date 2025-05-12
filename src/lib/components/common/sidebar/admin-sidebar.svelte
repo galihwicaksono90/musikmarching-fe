@@ -32,6 +32,11 @@
       href: "/admin/purchases",
       icon: ShoppingCart,
     },
+    {
+      title: "Contributor Apply",
+      href: "/admin/contributor-apply",
+      icon: ShoppingCart,
+    },
   ];
 </script>
 

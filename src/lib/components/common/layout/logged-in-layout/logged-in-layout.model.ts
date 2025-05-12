@@ -193,6 +193,19 @@ export const adminLayoutData: LoggedInLayoutProps = {
       href: "/admin/purchases",
       icon: ShoppingCart,
     },
+    {
+      type: 'link',
+      title: "Contributor Application",
+      href: "/admin/apply",
+      icon: ShoppingCart,
+    },
   ],
-  menuItems: []
+  menuItems: [
+    {
+      type: 'link',
+      href: PUBLIC_GOOGLE_LOGOUT_URL,
+      title: 'Logout',
+      icon: Settings,
+    },
+  ]
 };

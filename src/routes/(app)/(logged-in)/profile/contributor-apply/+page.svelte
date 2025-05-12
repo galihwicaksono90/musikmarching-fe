@@ -4,15 +4,18 @@
   import DollarSign from "lucide-svelte/icons/dollar-sign";
   import Music from "lucide-svelte/icons/music";
   import { ContributorApplyForm } from "$lib/components/form";
+  import { type ContributorApply } from "$lib/model";
   import * as Card from "$lib/components/ui/card";
 
   let { data }: { data: PageData } = $props();
 </script>
 
-{#snippet appliedBanner()}
-  <div class="py-2 px-4 bg-sky-500 text-white rounded-sm">
-    You have applied for a contributor account. Please wait for approval.
-  </div>
+{#snippet appliedBanner(data: ContributorApply)}
+  {#if !data.is_verified}
+    <div class="py-2 px-4 bg-sky-500 text-white rounded-sm">
+      You have applied for a contributor account. Please wait for approval.
+    </div>
+  {/if}
 {/snippet}
 
 <div class="flex gap-8 flex-col">
@@ -27,7 +30,7 @@
     </p>
   </div>
   {#if data.contributorApplyData}
-    {@render appliedBanner()}
+    {@render appliedBanner(data.contributorApplyData)}
   {/if}
   <div class="flex gap-6 w-full flex-col lg:flex-row">
     <Card.Root class="flex-1 h-fit">
