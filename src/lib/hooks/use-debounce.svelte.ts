@@ -8,7 +8,6 @@ export const useDebounce = <T,>(initialValue: T, delay: number = 250) => {
     loading = true;
 
     timeout = setTimeout(() => {
-      console.log({ newValue })
       value = newValue;
       loading = false;
     }, delay);

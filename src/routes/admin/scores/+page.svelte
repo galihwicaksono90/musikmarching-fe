@@ -35,7 +35,7 @@
 </h2>
 <AdminScoreTable scores={data.scores} {onOpen} />
 <Dialog.Root
-	bind:open={currentScoreId}
+	open={!!currentScoreId}
 	onOpenChange={(open) => {
 		if (!open) {
 			currentScoreId = null;

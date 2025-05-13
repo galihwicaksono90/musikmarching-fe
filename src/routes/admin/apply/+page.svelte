@@ -1,9 +1,8 @@
 <script lang="ts">
 	import type { PageData } from "./$types";
+	import { AdminContributorApplyTable } from "$lib/components/table";
 
 	let { data }: { data: PageData } = $props();
 </script>
 
-<pre>
-	{JSON.stringify(data.applications, null, 2)}
-</pre>
+<AdminContributorApplyTable applications={data.applications} form={data.form} />

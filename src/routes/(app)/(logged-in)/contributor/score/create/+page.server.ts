@@ -42,7 +42,7 @@ export const actions: Actions = {
     }).then((res) => res.json());
 
     if (result?.meta?.code === 201) {
-      redirect(
+      return redirect(
         `/contributor/score`,
         { type: "success", message: "Score Berhasil Dibuat" },
         event.cookies
@@ -52,5 +52,6 @@ export const actions: Actions = {
     return {
       form: withFiles(form)
     }
+
   },
 };

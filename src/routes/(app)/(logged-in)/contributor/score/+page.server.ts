@@ -35,7 +35,7 @@ export const actions: Actions = {
         return message(form, { message: "Score not deleted", type: 'success' });
       }
       return message(form, { message: "Score deleted", type: 'success' });
-    } catch(e) {
+    } catch (e) {
       console.log({ e })
       return message(form, { message: "Score not deleted", type: 'success' });
     }

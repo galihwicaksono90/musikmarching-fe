@@ -8,7 +8,6 @@ export const load: PageServerLoad = async (event) => {
 
   const scores = adminScoreSchema.array().safeParse(res.data);
   if (!scores.success) {
-    console.log({ errors: scores.error })
     return {
       scores: []
     }

@@ -27,26 +27,26 @@
     <Table.Cell>{item.id}</Table.Cell>
     <Table.Cell class="text-right">100</Table.Cell>
     <Table.Cell class="text-right">
-      <Button on:click={() => onOpen(item.id)}>View</Button>
+      <Button onclick={() => onOpen(item.id)}>View</Button>
     </Table.Cell>
   </Table.Row>
 {/snippet}
 
 <Table.Root>
-	<Table.Header>
-		<Table.Row>
-			<Table.Head class="">Title</Table.Head>
-			<Table.Head>Status</Table.Head>
-			<Table.Head>conrtibutor</Table.Head>
-			<Table.Head class="text-right">Price</Table.Head>
-			<Table.Head class="text-right"></Table.Head>
-		</Table.Row>
-	</Table.Header>
-	<Table.Body>
-		{#each scores as item}
-			{@render TableBody({ item, onOpen })}
-		{/each}
-	</Table.Body>
-	<Table.Caption>A list of submitted scores.</Table.Caption>
+  <Table.Header>
+    <Table.Row>
+	    <Table.Head class="">Title</Table.Head>
+	    <Table.Head>Status</Table.Head>
+	    <Table.Head>conrtibutor</Table.Head>
+	    <Table.Head class="text-right">Price</Table.Head>
+	    <Table.Head class="text-right"></Table.Head>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    {#each scores as item}
+      {@render TableBody({ item, onOpen })}
+    {/each}
+  </Table.Body>
+  <Table.Caption>A list of submitted scores.</Table.Caption>
 </Table.Root>
 
